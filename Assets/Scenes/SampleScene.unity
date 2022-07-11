@@ -402,6 +402,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   pos: {fileID: 0}
+  SimpleBlock: {fileID: 6879393052020784473, guid: 2dcdb70056e89e71090da910a47a23e2,
+    type: 3}
   Move_interval: 0.5
 --- !u!1 &1701568725
 GameObject:
