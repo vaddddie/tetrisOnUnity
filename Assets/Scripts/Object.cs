@@ -13,7 +13,7 @@ public class Object : MonoBehaviour
 
     public float Move_interval = 1f;
 
-    private bool[,] coord = new bool[12, 24];
+    private bool[,] coord = new bool[14, 25];
     private int[,] position = new int[4, 2];
     private GameObject[,] objects = new GameObject[10, 23];
     private float Step = 0.4288888f;
@@ -25,15 +25,18 @@ public class Object : MonoBehaviour
 
         Choose_the_object_rotations = 1;
 
-        for(int i = 0; i < 12; i++)
+        for(int i = 0; i < 14; i++)
         {
             coord[i, 0] = true;
+            coord[i, 1] = true;
         }
         
-        for(int i = 0; i < 24; i++)
+        for(int i = 0; i < 25; i++)
         {
             coord[0, i] = true;
-            coord[11, i] = true;
+            coord[1, i] = true;
+            coord[12, i] = true;
+            coord[13, i] = true;
         }
 
         Init_State();
@@ -46,8 +49,8 @@ public class Object : MonoBehaviour
 
         int temp = Choose_the_object_rotations;
         
-        Choose_the_object_rotations = Random.Range(1, 5);
-        //Choose_the_object_rotations = 2;
+        //Choose_the_object_rotations = Random.Range(1, 5);
+        Choose_the_object_rotations = 1;
         anim.SetInteger("Choose_the_object", Choose_the_object);
         anim.SetInteger("Choose_the_object_rotations", Choose_the_object_rotations);
 
@@ -99,7 +102,7 @@ public class Object : MonoBehaviour
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(0.202f - Step/2, 3.654f + Step*2);
+                pos.position = new Vector2(0.202f - Step/2, 3.654f + Step);
 
                 position[0, 0] = 4;
                 position[1, 0] = 5;
@@ -174,7 +177,7 @@ public class Object : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0] - 1, position[i, 1]] == true)
+                if (coord[position[i, 0], position[i, 1] + 1] == true)
                 {
                     temp = false;
                     break;
@@ -200,7 +203,7 @@ public class Object : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0] + 1, position[i, 1]] == true)
+                if (coord[position[i, 0] + 2, position[i, 1] + 1] == true)
                 {
                     temp = false;
                     break;
@@ -246,13 +249,13 @@ public class Object : MonoBehaviour
             yield return new WaitForSeconds(Move_interval);
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0], position[i, 1] - 1] == true)
+                if (coord[position[i, 0] + 1, position[i, 1]] == true)
                 {
                     temp = true;
                     
                     for (int j = 0; j < 4; j++)
                     {
-                        coord[position[j, 0], position[j, 1]] = true;
+                        coord[position[j, 0] + 1, position[j, 1] + 1] = true;
                         Vector2 TempPostition = new Vector2((position[j, 0] - 5) * Step - Step/2, (position[j, 1] - 11) * Step);
                         objects[position[j, 0] - 1, position[j, 1] - 1] = Instantiate(SimpleBlock, TempPostition, Quaternion.identity);
                     }
@@ -279,7 +282,7 @@ public class Object : MonoBehaviour
 
             for (int k1 = 1; k1 < 11; k1++)
             {
-                if (coord[k1, position[k, 1]] == false)
+                if (coord[k1 + 1, position[k, 1] + 1] == false)
                 {
                     FullLine = false;
                     break;
@@ -304,7 +307,7 @@ public class Object : MonoBehaviour
 
                     for (int ix = 1; ix < 11; ix++)
                     {
-                        coord[ix, iy] = coord[ix, iy + 1];
+                        coord[ix + 1, iy + 1] = coord[ix + 1, iy + 2];
 
                         objects[ix - 1, iy - 1] = objects[ix - 1, iy];
 
@@ -380,7 +383,7 @@ public class Object : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0],position[i, 1]] == true)
+                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
                 {
                     Rotate_State_1_minus(false);
                     temp = false;
@@ -455,7 +458,7 @@ public class Object : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0],position[i, 1]] == true)
+                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
                 {
                     Rotate_State_1_plus(false);
                     temp = false;
@@ -534,9 +537,9 @@ public class Object : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0],position[i, 1]] == true)
+                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
                 {
-                    Rotate_State_1_minus(false);
+                    Rotate_State_2_minus(false);
                     temp = false;
                     break;
                 }
@@ -613,9 +616,9 @@ public class Object : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0],position[i, 1]] == true)
+                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
                 {
-                    Rotate_State_1_plus(false);
+                    Rotate_State_2_plus(false);
                     temp = false;
                     break;
                 }
