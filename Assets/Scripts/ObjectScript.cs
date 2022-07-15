@@ -14,6 +14,9 @@ public class ObjectScript : MonoBehaviour
     public PredictionScript PObject;
 
     public float Move_interval = 1f;
+    public float Move_intervalWithAcc = 0.1f;
+
+    public float SideMove = 0.1f;
 
     private bool[,] coord = new bool[14, 25];
     private int[,] position = new int[4, 2];
@@ -21,7 +24,15 @@ public class ObjectScript : MonoBehaviour
 
     private int[] NextObject = new int[2];
 
-    private float Step = 0.4288888f;
+    private float Step = 1f;
+
+    private Coroutine _Move_Left;
+    private Coroutine _Move_Right;
+    private Coroutine _Move_Down;
+
+    private bool SC = false;
+    private bool SCL = false;
+    private bool SCR = false;
 
     void Start()
     {
@@ -48,7 +59,7 @@ public class ObjectScript : MonoBehaviour
         NextObject[1] = Random.Range(1, 5);
 
         //NextObject[0] = 2;
-        //NextObject[1] = 3;
+        //NextObject[1] = 2;
 
         Init_State();
 
@@ -77,7 +88,7 @@ public class ObjectScript : MonoBehaviour
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(0.202f, 3.654f - Step / 2 + Step*2);
+                pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 5 + (Choose_the_object_rotations - 1);
                 position[0, 1] = 21;
@@ -95,7 +106,7 @@ public class ObjectScript : MonoBehaviour
             {
                 if (Choose_the_object_rotations == 2)
                 {
-                    pos.position = new Vector2(0.41644f - Step / 2, 3.439556f + Step*2);
+                    pos.position = new Vector2(5.5f, 20.5f);
 
                     position[0, 0] = 6;
                     position[0, 1] = 22;
@@ -111,7 +122,7 @@ public class ObjectScript : MonoBehaviour
 
                 } else
                 {
-                    pos.position = new Vector2(0.41644f - 3 * Step / 2, 3.439556f + Step*2);
+                    pos.position = new Vector2(4.5f, 20.5f);
 
                     position[0, 0] = 5;
                     position[0, 1] = 20;
@@ -132,7 +143,7 @@ public class ObjectScript : MonoBehaviour
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(0.202f - Step/2, 3.654f + Step);
+                pos.position = new Vector2(5f, 20f);
 
                 if (Choose_the_object_rotations == 1)
                 {
@@ -160,25 +171,26 @@ public class ObjectScript : MonoBehaviour
 
             } else
             {
-                pos.position = new Vector2(0.41644f - Step, 3.439556f + Step*5/2);
+                pos.position = new Vector2(5f, 21f);
 
                 if (Choose_the_object_rotations == 2)
-                {
-                    position[0, 1] = 23;
-                    position[1, 1] = 22;
-                    position[2, 1] = 21;
-                    position[3, 1] = 20;
-
-                    for (int i = 0; i < 4; i++)
-                    {
-                        position[i, 0] = 6;
-                    }
-                } else
                 {
                     position[0, 1] = 20;
                     position[1, 1] = 21;
                     position[2, 1] = 22;
                     position[3, 1] = 23;
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        position[i, 0] = 6;
+                    }
+
+                } else
+                {
+                    position[0, 1] = 23;
+                    position[1, 1] = 22;
+                    position[2, 1] = 21;
+                    position[3, 1] = 20;
 
                     for (int i = 0; i < 4; i++)
                     {
@@ -192,7 +204,7 @@ public class ObjectScript : MonoBehaviour
         {
             if (Choose_the_object_rotations < 3)
             {
-                pos.position = new Vector2(0.202f, 3.654f + 3*Step/2);
+                pos.position = new Vector2(5.5f, 20.5f);
 
                 position[2, 0] = 6;
                 position[2, 1] = 21; 
@@ -224,7 +236,7 @@ public class ObjectScript : MonoBehaviour
 
             } else if (Choose_the_object_rotations == 3)
             {
-                pos.position = new Vector2(0.202f - Step, 3.654f + 3*Step/2);
+                pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 6;
                 position[0, 1] = 20;
@@ -240,7 +252,7 @@ public class ObjectScript : MonoBehaviour
 
             } else 
             {
-                pos.position = new Vector2(0.202f, 3.654f + 3*Step/2);
+                pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 5;
                 position[0, 1] = 20;
@@ -258,7 +270,7 @@ public class ObjectScript : MonoBehaviour
 
         if (Choose_the_object == 4)
         {
-            pos.position = new Vector2(0.202f - Step/2, 3.654f + Step * 2);
+            pos.position = new Vector2(5f, 21f);
             
             position[0, 0] = 5;
             position[0, 1] = 21;
@@ -277,7 +289,7 @@ public class ObjectScript : MonoBehaviour
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(0.202f, 3.654f + Step * 3/2);
+                pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 4 + Choose_the_object_rotations;
                 position[0, 1] = 21;
@@ -293,7 +305,7 @@ public class ObjectScript : MonoBehaviour
 
             } else if (Choose_the_object_rotations == 2)
             {
-                pos.position = new Vector2(0.202f - Step, 3.654f + Step * 3/2);
+                pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 5;
                 position[0, 1] = 22;
@@ -308,7 +320,7 @@ public class ObjectScript : MonoBehaviour
                 position[3, 1] = 20;
             } else
             {
-                pos.position = new Vector2(0.202f, 3.654f + Step * 3/2);
+                pos.position = new Vector2(5.5f, 20.5f);
                 
                 position[0, 0] = 6;
                 position[0, 1] = 20;
@@ -328,7 +340,7 @@ public class ObjectScript : MonoBehaviour
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(0.202f - Step, 3.654f - Step / 2 + Step*2);
+                pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 7 - Choose_the_object_rotations;
                 position[0, 1] = 21;
@@ -346,7 +358,7 @@ public class ObjectScript : MonoBehaviour
             {
                 if (Choose_the_object_rotations == 2)
                 {
-                    pos.position = new Vector2(0.41644f - Step / 2, 3.439556f + Step*2);
+                    pos.position = new Vector2(5.5f, 20.5f);
 
                     position[0, 0] = 6;
                     position[0, 1] = 20;
@@ -362,7 +374,7 @@ public class ObjectScript : MonoBehaviour
 
                 } else
                 {
-                    pos.position = new Vector2(0.41644f - 3 * Step / 2, 3.439556f + Step*2);
+                    pos.position = new Vector2(4.5f, 20.5f);
 
                     position[0, 0] = 5;
                     position[0, 1] = 22;
@@ -383,7 +395,7 @@ public class ObjectScript : MonoBehaviour
         {
             if (Choose_the_object_rotations < 3)
             {
-                pos.position = new Vector2(0.202f - Step, 3.654f + 3*Step/2);
+                pos.position = new Vector2(4.5f, 20.5f);
 
                 position[2, 0] = 5;
                 position[2, 1] = 21; 
@@ -415,7 +427,7 @@ public class ObjectScript : MonoBehaviour
 
             } else if (Choose_the_object_rotations == 3)
             {
-                pos.position = new Vector2(0.202f, 3.654f + 3*Step/2);
+                pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 5;
                 position[0, 1] = 20;
@@ -431,7 +443,7 @@ public class ObjectScript : MonoBehaviour
 
             } else 
             {
-                pos.position = new Vector2(0.202f - Step, 3.654f + 3*Step/2);
+                pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 4;
                 position[0, 1] = 22;
@@ -447,7 +459,13 @@ public class ObjectScript : MonoBehaviour
             }
         }
 
-        StartCoroutine(Move_down());
+        if (SC)
+        {
+            StopCoroutine(_Move_Down);
+        }
+
+        _Move_Down = StartCoroutine(Move_down());
+        SC = true;        
     }
 
     private void PredictionObject()
@@ -460,6 +478,43 @@ public class ObjectScript : MonoBehaviour
 
     void Update()
     {
+        // For developmers::
+
+        if (Input.GetKeyDown("1"))
+            NextObject[0] = 1;
+
+        if (Input.GetKeyDown("2"))
+            NextObject[0] = 2;
+
+        if (Input.GetKeyDown("3"))
+            NextObject[0] = 3;
+
+        if (Input.GetKeyDown("4"))
+            NextObject[0] = 4;
+
+        if (Input.GetKeyDown("5"))
+            NextObject[0] = 5;
+
+        if (Input.GetKeyDown("6"))
+            NextObject[0] = 6;
+
+        if (Input.GetKeyDown("7"))
+            NextObject[0] = 7;
+        
+
+        if (Input.GetKeyDown("u"))
+            NextObject[1] = 1;
+
+        if (Input.GetKeyDown("i"))
+            NextObject[1] = 2;
+
+        if (Input.GetKeyDown("o"))
+            NextObject[1] = 3;
+
+        if (Input.GetKeyDown("p"))
+            NextObject[1] = 4;
+
+        // For developmers::
         if (Input.GetKeyDown("e"))
         {
             if (Choose_the_object == 1)
@@ -504,9 +559,103 @@ public class ObjectScript : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown("a"))
+        if (Input.GetKey("a"))
         {   
-            bool temp = true;
+            if (!SCL)
+                _Move_Left = StartCoroutine(Move_Left());
+
+        } else if (SCL)
+        {
+            StopCoroutine(_Move_Left);
+            SCL = false;
+        }
+        
+        if (Input.GetKey("d"))
+        {   
+            if (!SCR)
+                _Move_Right = StartCoroutine(Move_Right());
+
+        } else if (SCR)
+        {
+            StopCoroutine(_Move_Right);
+            SCR = false;
+        }
+
+        if (Input.GetKeyDown("s"))
+        {
+            bool temp = false;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (coord[position[i, 0] + 1, position[i, 1]] == true)
+                {
+                    temp = true;
+                    
+                    for (int j = 0; j < 4; j++)
+                    {
+                        coord[position[j, 0] + 1, position[j, 1] + 1] = true;
+                        Vector2 TempPostition = new Vector2(position[j, 0] * Step - Step/2, position[j, 1] * Step - Step/2);
+                        objects[position[j, 0] - 1, position[j, 1] - 1] = Instantiate(SimpleBlock, TempPostition, Quaternion.identity);
+                    }
+
+                    LineDeleting();
+                    
+                    break;
+                } 
+            }
+            if (temp)
+            {
+                Init_State();
+            } else
+            {
+                pos.position = pos.position + new Vector3(0, -Step, 0);
+                for (int i = 0; i < 4; i++)
+                {
+                    position[i, 1] -= 1;
+                }
+            }
+
+            Move_interval /= 10;
+        }
+
+        if (Input.GetKeyUp("s"))
+        {
+            Move_interval *= 10;
+        }
+    }
+
+    private IEnumerator Move_Left()
+    {
+        bool temp = true;
+
+        SCL = true;
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (coord[position[i, 0], position[i, 1] + 1] == true)
+            {
+                temp = false;
+                break;
+            }
+        }
+        
+        if (temp)
+        {
+
+            pos.position = pos.position + new Vector3(-Step, 0, 0);
+
+            for (int i = 0; i < 4; i++)
+            {
+                position[i, 0] -= 1;
+            }
+            
+        }
+
+        yield return new WaitForSeconds(0.4f);
+
+        while (true)
+        {
+            temp = true;
 
             for (int i = 0; i < 4; i++)
             {
@@ -528,11 +677,45 @@ public class ObjectScript : MonoBehaviour
                 }
                 
             }
+
+            yield return new WaitForSeconds(SideMove);
         }
 
-        if (Input.GetKeyDown("d"))
+
+    }
+
+    private IEnumerator Move_Right()
+    {
+        bool temp = true;
+
+        SCR = true;
+
+        for (int i = 0; i < 4; i++)
         {
-            bool temp = true;
+            if (coord[position[i, 0] + 2, position[i, 1] + 1] == true)
+            {
+                temp = false;
+                break;
+            }
+        }
+        
+        if (temp)
+        {
+
+            pos.position = pos.position + new Vector3(Step, 0, 0);
+
+            for (int i = 0; i < 4; i++)
+            {
+                position[i, 0] += 1;
+            }
+            
+        }
+
+        yield return new WaitForSeconds(0.4f);
+        
+        while (true)
+        {
+            temp = true;
 
             for (int i = 0; i < 4; i++)
             {
@@ -554,32 +737,29 @@ public class ObjectScript : MonoBehaviour
                 }
                 
             }
-        }
 
-        if (Input.GetKeyDown("s"))
-        {
-            Move_interval = Move_interval / 4;
+            yield return new WaitForSeconds(SideMove);
         }
-
-        if (Input.GetKeyUp("s"))
-        {
-            Move_interval = Move_interval * 4;
-        }
-
     }
+    
+    // Move Down
 
-    IEnumerator Move_down()
+
+    private IEnumerator Move_down()
     {
         bool temp = false;
 
         yield return new WaitForSeconds(Move_interval);
-        while(true){
+        while(true)
+        {
             pos.position = pos.position + new Vector3(0, -Step, 0);
             for (int i = 0; i < 4; i++)
             {
                 position[i, 1] -= 1;
             }
+            
             yield return new WaitForSeconds(Move_interval);
+
             for (int i = 0; i < 4; i++)
             {
                 if (coord[position[i, 0] + 1, position[i, 1]] == true)
@@ -589,7 +769,7 @@ public class ObjectScript : MonoBehaviour
                     for (int j = 0; j < 4; j++)
                     {
                         coord[position[j, 0] + 1, position[j, 1] + 1] = true;
-                        Vector2 TempPostition = new Vector2((position[j, 0] - 5) * Step - Step/2, (position[j, 1] - 11) * Step);
+                        Vector2 TempPostition = new Vector2(position[j, 0] * Step - Step/2, position[j, 1] * Step - Step/2);
                         objects[position[j, 0] - 1, position[j, 1] - 1] = Instantiate(SimpleBlock, TempPostition, Quaternion.identity);
                     }
 
@@ -601,11 +781,13 @@ public class ObjectScript : MonoBehaviour
             if (temp)
             {
                 Init_State();
-                break;
+                yield break;
             }
-
         }
-    } 
+
+    }
+
+    // Move down
 
     private void LineDeleting()
     {
