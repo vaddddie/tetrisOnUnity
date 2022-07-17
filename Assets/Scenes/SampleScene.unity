@@ -131,7 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 192200684}
   - component: {fileID: 192200683}
-  - component: {fileID: 192200682}
   - component: {fileID: 192200685}
   m_Layer: 0
   m_Name: Prediction
@@ -140,25 +139,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &192200682
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192200681}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 354a356ca5c7cdbf99a4dea9081387ac, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!212 &192200683
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -235,7 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9cd625a02f4d7bce90043923ffa06fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 0}
   SimpleBlock: {fileID: 6879393052020784473, guid: 2dcdb70056e89e71090da910a47a23e2,
     type: 3}
   blocks:
@@ -243,7 +222,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  ObjScr: {fileID: 0}
 --- !u!1 &272652647
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +659,6 @@ MonoBehaviour:
   Move_interval: 0.8
   Move_intervalWithAcc: 0.1
   SideMove: 0.05
-  Step: 1
 --- !u!1 &1756619807
 GameObject:
   m_ObjectHideFlags: 0
