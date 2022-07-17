@@ -5,31 +5,74 @@ using UnityEngine;
 
 public class PredictionScript : MonoBehaviour
 {
-    public Animator anim;
-    public Transform pos;
+    public Transform transform;
+    
+    public GameObject SimpleBlock;
+    public GameObject[] blocks = new GameObject[4];
 
-    private int temp;
+    public ObjectScript ObjScr;
+    private float Step;
 
     void Start()
     {
-        anim = GetComponent<Animator>();
-        pos = GetComponent<Transform>();
-
-        temp = 1;
+        transform = GetComponent<Transform>();
+        Step = ObjScr.Step;
     }
 
     public void ChangePredictionObject(int PreObject, int PreObjectRotate)
     {
-        anim.SetInteger("ChangePredictionState", PreObject);
-
-        if (PreObjectRotate > temp){
-            pos.Rotate(0, 0, -90 * (PreObjectRotate - temp));
-        }
-        else
+        for (int i = 0; i < blocks.Length; i++)
         {
-            pos.Rotate(0, 0, -90 * (PreObjectRotate + 4 - temp));
+            if (blocks[i] != null)
+            {
+                Destroy(blocks[i]);
+            }
         }
+    
+        if (PreObject == 1)
+        {
+            if (PreObjectRotate % 2 == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    blocks[i] = Instantiate(SimpleBlock, transform.position + new Vector3(-Step + (Step * i), -(Step/2) * (PreObjectRotate - 2), 0), Quaternion.identity);
+                }
+                
+                blocks[3] = Instantiate(SimpleBlock, transform.position + new Vector3(-Step * (PreObjectRotate - 2), (PreObjectRotate - 2) * Step/2, 0), Quaternion.identity);
 
-        temp = PreObjectRotate;
+            }else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    blocks[i] = Instantiate(SimpleBlock, transform.position + new Vector3((-Step/2) * (PreObjectRotate - 3), -Step + i, 0), Quaternion.identity);
+                }
+
+                blocks[3] = Instantiate(SimpleBlock, transform.position + new Vector3((PreObjectRotate - 3) * Step/2, (PreObjectRotate - 3) * Step, 0), Quaternion.identity);
+            }
+        }
+        if (PreObject == 2)
+        {
+
+        }
+        if (PreObject == 3)
+        {
+
+        }
+        if (PreObject == 4)
+        {
+            
+        }
+        if (PreObject == 5)
+        {
+
+        }
+        if (PreObject == 6)
+        {
+            
+        }
+        if (PreObject == 7)
+        {
+
+        }
     }
 }

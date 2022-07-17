@@ -7,11 +7,12 @@ public class ObjectScript : MonoBehaviour
     private int Choose_the_object;
     private int Choose_the_object_rotations;
 
-    public Animator anim;
-    public Transform pos;
+    //public Animator anim;
+    //public Transform pos;
     public GameObject SimpleBlock;
 
     public PredictionScript PObject;
+    public ScoreScript SScript;
 
     public float Move_interval = 1f;
     public float Move_intervalWithAcc = 0.1f;
@@ -21,10 +22,11 @@ public class ObjectScript : MonoBehaviour
     private bool[,] coord = new bool[14, 25];
     private int[,] position = new int[4, 2];
     private GameObject[,] objects = new GameObject[10, 23];
+    private GameObject[] blocks = new GameObject[4];
 
     private int[] NextObject = new int[2];
 
-    private float Step = 1f;
+    public float Step = 1f;
 
     private Coroutine _Move_Left;
     private Coroutine _Move_Right;
@@ -34,10 +36,12 @@ public class ObjectScript : MonoBehaviour
     private bool SCL = false;
     private bool SCR = false;
 
+    private bool CheckAccel = false;
+
     void Start()
     {
-        anim = GetComponent<Animator>();
-        pos = GetComponent<Transform>();
+        //anim = GetComponent<Animator>();
+        //pos = GetComponent<Transform>();
 
         Choose_the_object_rotations = 1;
 
@@ -67,28 +71,28 @@ public class ObjectScript : MonoBehaviour
 
     private void Init_State()
     {
-        int temp = Choose_the_object_rotations;
+        //int temp = Choose_the_object_rotations;
         
         Choose_the_object = NextObject[0];
         Choose_the_object_rotations = NextObject[1];
 
-        anim.SetInteger("Choose_the_object", Choose_the_object);
+        //anim.SetInteger("Choose_the_object", Choose_the_object);
 
         PredictionObject();
 
-        if (Choose_the_object_rotations > temp){
-            pos.Rotate(0, 0, -90 * (Choose_the_object_rotations - temp));
-        }
-        else
-        {
-            pos.Rotate(0, 0, -90 * (Choose_the_object_rotations + 4 - temp));
-        }
+        //if (Choose_the_object_rotations > temp){
+        //    pos.Rotate(0, 0, -90 * (Choose_the_object_rotations - temp));
+        //}
+        //else
+        //{
+        //   pos.Rotate(0, 0, -90 * (Choose_the_object_rotations + 4 - temp));
+        //}
 
         if (Choose_the_object == 1)
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(5.5f, 20.5f);
+                //pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 5 + (Choose_the_object_rotations - 1);
                 position[0, 1] = 21;
@@ -106,7 +110,7 @@ public class ObjectScript : MonoBehaviour
             {
                 if (Choose_the_object_rotations == 2)
                 {
-                    pos.position = new Vector2(5.5f, 20.5f);
+                    //pos.position = new Vector2(5.5f, 20.5f);
 
                     position[0, 0] = 6;
                     position[0, 1] = 22;
@@ -122,7 +126,7 @@ public class ObjectScript : MonoBehaviour
 
                 } else
                 {
-                    pos.position = new Vector2(4.5f, 20.5f);
+                    //pos.position = new Vector2(4.5f, 20.5f);
 
                     position[0, 0] = 5;
                     position[0, 1] = 20;
@@ -137,13 +141,17 @@ public class ObjectScript : MonoBehaviour
                     position[3, 1] = 22;
                 }
             }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }
         }
 
         if (Choose_the_object == 2)
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(5f, 20f);
+                //pos.position = new Vector2(5f, 20f);
 
                 if (Choose_the_object_rotations == 1)
                 {
@@ -171,7 +179,7 @@ public class ObjectScript : MonoBehaviour
 
             } else
             {
-                pos.position = new Vector2(5f, 21f);
+                //pos.position = new Vector2(5f, 21f);
 
                 if (Choose_the_object_rotations == 2)
                 {
@@ -198,13 +206,17 @@ public class ObjectScript : MonoBehaviour
                     }
                 }
             }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }
         }
 
         if (Choose_the_object == 3)
         {
             if (Choose_the_object_rotations < 3)
             {
-                pos.position = new Vector2(5.5f, 20.5f);
+                //pos.position = new Vector2(5.5f, 20.5f);
 
                 position[2, 0] = 6;
                 position[2, 1] = 21; 
@@ -236,7 +248,7 @@ public class ObjectScript : MonoBehaviour
 
             } else if (Choose_the_object_rotations == 3)
             {
-                pos.position = new Vector2(4.5f, 20.5f);
+                //pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 6;
                 position[0, 1] = 20;
@@ -252,7 +264,7 @@ public class ObjectScript : MonoBehaviour
 
             } else 
             {
-                pos.position = new Vector2(5.5f, 20.5f);
+                //pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 5;
                 position[0, 1] = 20;
@@ -266,11 +278,16 @@ public class ObjectScript : MonoBehaviour
                 position[3, 0] = 7;
                 position[3, 1] = 21;
             }
+
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }
         }
 
         if (Choose_the_object == 4)
         {
-            pos.position = new Vector2(5f, 21f);
+            //pos.position = new Vector2(5f, 21f);
             
             position[0, 0] = 5;
             position[0, 1] = 21;
@@ -283,13 +300,18 @@ public class ObjectScript : MonoBehaviour
 
             position[3, 0] = 6;
             position[3, 1] = 22;
+
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }
         }
 
         if (Choose_the_object == 5)
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(5.5f, 20.5f);
+                //pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 4 + Choose_the_object_rotations;
                 position[0, 1] = 21;
@@ -305,7 +327,7 @@ public class ObjectScript : MonoBehaviour
 
             } else if (Choose_the_object_rotations == 2)
             {
-                pos.position = new Vector2(4.5f, 20.5f);
+                //pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 5;
                 position[0, 1] = 22;
@@ -320,7 +342,7 @@ public class ObjectScript : MonoBehaviour
                 position[3, 1] = 20;
             } else
             {
-                pos.position = new Vector2(5.5f, 20.5f);
+                //pos.position = new Vector2(5.5f, 20.5f);
                 
                 position[0, 0] = 6;
                 position[0, 1] = 20;
@@ -334,13 +356,18 @@ public class ObjectScript : MonoBehaviour
                 position[3, 0] = 6;
                 position[3, 1] = 22;
             }
+
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }
         }
 
         if (Choose_the_object == 6)
         {
             if (Choose_the_object_rotations % 2 == 1)
             {
-                pos.position = new Vector2(4.5f, 20.5f);
+                //pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 7 - Choose_the_object_rotations;
                 position[0, 1] = 21;
@@ -358,7 +385,7 @@ public class ObjectScript : MonoBehaviour
             {
                 if (Choose_the_object_rotations == 2)
                 {
-                    pos.position = new Vector2(5.5f, 20.5f);
+                    //pos.position = new Vector2(5.5f, 20.5f);
 
                     position[0, 0] = 6;
                     position[0, 1] = 20;
@@ -374,7 +401,7 @@ public class ObjectScript : MonoBehaviour
 
                 } else
                 {
-                    pos.position = new Vector2(4.5f, 20.5f);
+                    //pos.position = new Vector2(4.5f, 20.5f);
 
                     position[0, 0] = 5;
                     position[0, 1] = 22;
@@ -389,13 +416,18 @@ public class ObjectScript : MonoBehaviour
                     position[3, 1] = 20;
                 }
             }
+
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }            
         }
 
         if (Choose_the_object == 7)
         {
             if (Choose_the_object_rotations < 3)
             {
-                pos.position = new Vector2(4.5f, 20.5f);
+                //pos.position = new Vector2(4.5f, 20.5f);
 
                 position[2, 0] = 5;
                 position[2, 1] = 21; 
@@ -427,7 +459,7 @@ public class ObjectScript : MonoBehaviour
 
             } else if (Choose_the_object_rotations == 3)
             {
-                pos.position = new Vector2(5.5f, 20.5f);
+                //pos.position = new Vector2(5.5f, 20.5f);
 
                 position[0, 0] = 5;
                 position[0, 1] = 20;
@@ -443,7 +475,7 @@ public class ObjectScript : MonoBehaviour
 
             } else 
             {
-                pos.position = new Vector2(4.5f, 20.5f);
+                //pos.position = new Vector2(4.5f, 20.5f);
 
                 position[0, 0] = 4;
                 position[0, 1] = 22;
@@ -457,6 +489,11 @@ public class ObjectScript : MonoBehaviour
                 position[3, 0] = 6;
                 position[3, 1] = 21;
             }
+
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }            
         }
 
         if (SC)
@@ -470,7 +507,8 @@ public class ObjectScript : MonoBehaviour
 
     private void PredictionObject()
     {
-        NextObject[0] = Random.Range(1, 7);
+        NextObject[0] = 1;
+        //NextObject[0] = Random.Range(1, 7);
         NextObject[1] = Random.Range(1, 5);
 
         PObject.ChangePredictionObject(NextObject[0], NextObject[1]);
@@ -518,44 +556,44 @@ public class ObjectScript : MonoBehaviour
         if (Input.GetKeyDown("e"))
         {
             if (Choose_the_object == 1)
-                Rotate_State_1_plus(true);
+                Rotate_State_1_plus();
 
             if (Choose_the_object == 2)
-                Rotate_State_2_plus(true);
+                Rotate_State_2_plus();
 
             if (Choose_the_object == 3)
-                Rotate_State_3_plus(true);
+                Rotate_State_3_plus();
 
             if (Choose_the_object == 5)
-                Rotate_State_5_plus(true);
+                Rotate_State_5_plus();
 
             if (Choose_the_object == 6)
-                Rotate_State_6_plus(true);
+                Rotate_State_6_plus();
 
             if (Choose_the_object == 7)
-                Rotate_State_7_plus(true);
+                Rotate_State_7_plus();
 
         }
 
         if (Input.GetKeyDown("q"))
         {
             if (Choose_the_object == 1)
-                Rotate_State_1_minus(true);
+                Rotate_State_1_minus();
 
             if (Choose_the_object == 2)
-                Rotate_State_2_minus(true);
+                Rotate_State_2_minus();
 
             if (Choose_the_object == 3)
-                Rotate_State_3_minus(true);
+                Rotate_State_3_minus();
             
             if (Choose_the_object == 5)
-                Rotate_State_5_minus(true);
+                Rotate_State_5_minus();
 
             if (Choose_the_object == 6)
-                Rotate_State_6_minus(true);
+                Rotate_State_6_minus();
 
             if (Choose_the_object == 7)
-                Rotate_State_7_minus(true);
+                Rotate_State_7_minus();
 
         }
 
@@ -594,8 +632,9 @@ public class ObjectScript : MonoBehaviour
                     for (int j = 0; j < 4; j++)
                     {
                         coord[position[j, 0] + 1, position[j, 1] + 1] = true;
-                        Vector2 TempPostition = new Vector2(position[j, 0] * Step - Step/2, position[j, 1] * Step - Step/2);
-                        objects[position[j, 0] - 1, position[j, 1] - 1] = Instantiate(SimpleBlock, TempPostition, Quaternion.identity);
+                        objects[position[j, 0] - 1, position[j, 1] - 1] = blocks[j];
+                        //Vector2 TempPostition = new Vector2(position[j, 0] * Step - Step/2, position[j, 1] * Step - Step/2);
+                        //objects[position[j, 0] - 1, position[j, 1] - 1] = Instantiate(SimpleBlock, TempPostition, Quaternion.identity);
                     }
 
                     LineDeleting();
@@ -608,18 +647,22 @@ public class ObjectScript : MonoBehaviour
                 Init_State();
             } else
             {
-                pos.position = pos.position + new Vector3(0, -Step, 0);
+                //pos.position = pos.position + new Vector3(0, -Step, 0);
+                SScript.AddingPoints(1);
                 for (int i = 0; i < 4; i++)
                 {
                     position[i, 1] -= 1;
+                    blocks[i].transform.position = blocks[i].transform.position + new Vector3(0, -Step, 0);
                 }
             }
 
+            CheckAccel = true;
             Move_interval /= 10;
         }
 
         if (Input.GetKeyUp("s"))
         {
+            CheckAccel = false;
             Move_interval *= 10;
         }
     }
@@ -642,16 +685,17 @@ public class ObjectScript : MonoBehaviour
         if (temp)
         {
 
-            pos.position = pos.position + new Vector3(-Step, 0, 0);
+            //pos.position = pos.position + new Vector3(-Step, 0, 0);
 
             for (int i = 0; i < 4; i++)
             {
                 position[i, 0] -= 1;
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3(-Step, 0, 0);
             }
             
         }
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.3f);
 
         while (true)
         {
@@ -669,11 +713,12 @@ public class ObjectScript : MonoBehaviour
             if (temp)
             {
 
-                pos.position = pos.position + new Vector3(-Step, 0, 0);
+                //pos.position = pos.position + new Vector3(-Step, 0, 0);
 
                 for (int i = 0; i < 4; i++)
                 {
                     position[i, 0] -= 1;
+                    blocks[i].transform.position = blocks[i].transform.position + new Vector3(-Step, 0, 0);
                 }
                 
             }
@@ -702,16 +747,17 @@ public class ObjectScript : MonoBehaviour
         if (temp)
         {
 
-            pos.position = pos.position + new Vector3(Step, 0, 0);
+            //pos.position = pos.position + new Vector3(Step, 0, 0);
 
             for (int i = 0; i < 4; i++)
             {
                 position[i, 0] += 1;
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3(Step, 0, 0);
             }
             
         }
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.3f);
         
         while (true)
         {
@@ -729,11 +775,12 @@ public class ObjectScript : MonoBehaviour
             if (temp)
             {
 
-                pos.position = pos.position + new Vector3(Step, 0, 0);
+                //pos.position = pos.position + new Vector3(Step, 0, 0);
 
                 for (int i = 0; i < 4; i++)
                 {
                     position[i, 0] += 1;
+                    blocks[i].transform.position = blocks[i].transform.position + new Vector3(Step, 0, 0);
                 }
                 
             }
@@ -752,10 +799,15 @@ public class ObjectScript : MonoBehaviour
         yield return new WaitForSeconds(Move_interval);
         while(true)
         {
-            pos.position = pos.position + new Vector3(0, -Step, 0);
+            //pos.position = pos.position + new Vector3(0, -Step, 0);
+            if (CheckAccel)
+            {
+                SScript.AddingPoints(1);
+            }
             for (int i = 0; i < 4; i++)
             {
                 position[i, 1] -= 1;
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3(0, -Step, 0);
             }
             
             yield return new WaitForSeconds(Move_interval);
@@ -769,8 +821,9 @@ public class ObjectScript : MonoBehaviour
                     for (int j = 0; j < 4; j++)
                     {
                         coord[position[j, 0] + 1, position[j, 1] + 1] = true;
-                        Vector2 TempPostition = new Vector2(position[j, 0] * Step - Step/2, position[j, 1] * Step - Step/2);
-                        objects[position[j, 0] - 1, position[j, 1] - 1] = Instantiate(SimpleBlock, TempPostition, Quaternion.identity);
+                        objects[position[j, 0] - 1, position[j, 1] - 1] = blocks[j];
+                        //Vector2 TempPostition = new Vector2(position[j, 0] * Step - Step/2, position[j, 1] * Step - Step/2);
+                        //objects[position[j, 0] - 1, position[j, 1] - 1] = Instantiate(SimpleBlock, TempPostition, Quaternion.identity);
                     }
 
                     LineDeleting();
@@ -791,6 +844,8 @@ public class ObjectScript : MonoBehaviour
 
     private void LineDeleting()
     {
+        int GlobalNumber = 0;
+
         for (int k = 0; k < 4; k++)
         {
             bool FullLine = true;
@@ -807,6 +862,7 @@ public class ObjectScript : MonoBehaviour
             if (FullLine)
             {
                 bool check = true;
+                GlobalNumber += 1;
 
                 for (int iy = position[k, 1]; iy < 23; iy++)
                 {
@@ -836,923 +892,1144 @@ public class ObjectScript : MonoBehaviour
                 k--;                     
             }
         }
+
+        if (GlobalNumber != 0)
+        {
+            if (GlobalNumber == 1)
+            {
+                SScript.AddingPoints(100);
+            } else if (GlobalNumber == 2)
+            {
+                SScript.AddingPoints(300);
+            } else if (GlobalNumber == 3)
+            {
+                SScript.AddingPoints(500);
+            } else if (GlobalNumber == 4)
+            {
+                SScript.AddingPoints(800);
+            }
+        }
     }
 
 
-    private void Rotate_State_1_plus(bool check)
+    private void Rotate_State_1_plus()
     {
-        bool temp = true;
+        int[,] interim = new int[4, 2]; 
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 0] -= 2;
+            interim[3, 0] = position[3, 0] - 2;
+            interim[3, 1] = position[3, 1];
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] += 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 1] += 2;
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] + 2;
         }
 
         if (Choose_the_object_rotations == 3) 
-        {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+        { 
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 0] += 2;            
+            interim[3, 0] = position[3, 0] + 2;
+            interim[3, 1] = position[3, 1];
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 1] -= 2;
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] - 2;
         }
 
-        if (Choose_the_object_rotations != 4)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations += 1;
-        } else {
-            Choose_the_object_rotations = 1;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_1_minus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, -90);
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
+
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+
+            if (Choose_the_object_rotations != 4)
+            {
+                Choose_the_object_rotations += 1;
+            } else {
+                Choose_the_object_rotations = 1;
+            }
         }
+
+
 
     }
 
-    private void Rotate_State_1_minus(bool check)
+    private void Rotate_State_1_minus()
     {       
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] += 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 1] += 2;
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] + 2;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 0] += 2;
+            interim[3, 0] = position[3, 0] + 2;
+            interim[3, 1] = position[3, 1];
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 1] -= 2;            
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] - 2;    
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 0] -= 2;
+            interim[3, 0] = position[3, 0] - 2;
+            interim[3, 1] = position[3, 1];
         }
 
-        if (Choose_the_object_rotations != 1)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations -= 1;
-        } else {
-            Choose_the_object_rotations = 4;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_1_plus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, 90);
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
+
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 1)
+            {
+                Choose_the_object_rotations -= 1;
+            } else {
+                Choose_the_object_rotations = 4;
+            }
         }
 
     }
 
-    private void Rotate_State_2_plus(bool check)
+    private void Rotate_State_2_plus()
     {
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] += 2;
-            position[0, 1] -= 2;
+            interim[0, 0] = position[0, 0] + 2;
+            interim[0, 1] = position[0, 1] - 2;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 0] -= 2;
-            position[3, 1] -= 2;
+            interim[3, 0] = position[3, 0] - 2;
+            interim[3, 1] = position[3, 1] - 2;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] -= 2;
-            position[0, 1] += 2;
+            interim[0, 0] = position[0, 0] - 2;
+            interim[0, 1] = position[0, 1] + 2;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;  
-            position[3, 1] -= 1;          
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;  
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 0] += 2;
-            position[3, 1] += 2;
+            interim[3, 0] = position[3, 0] + 2;
+            interim[3, 1] = position[3, 1] + 2;
         }
 
-        if (Choose_the_object_rotations != 4)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations += 1;
-        } else {
-            Choose_the_object_rotations = 1;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_2_minus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, -90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 4)
+            {
+                Choose_the_object_rotations += 1;
+            } else {
+                Choose_the_object_rotations = 1;
+            }
+        }
     }
 
-    private void Rotate_State_2_minus(bool check)
+    private void Rotate_State_2_minus()
     {       
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 0] -= 2;
-            position[3, 1] -= 2;
+            interim[3, 0] = position[3, 0] - 2;
+            interim[3, 1] = position[3, 1] - 2;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] -= 2;
-            position[0, 1] += 2;
+            interim[0, 0] = position[0, 0] - 2;
+            interim[0, 1] = position[0, 1] + 2;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;  
-            position[3, 1] -= 1; 
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 0] += 2;
-            position[3, 1] += 2;           
+            interim[3, 0] = position[3, 0] + 2;
+            interim[3, 1] = position[3, 1] + 2;           
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] += 2;
-            position[0, 1] -= 2;
+            interim[0, 0] = position[0, 0] + 2;
+            interim[0, 1] = position[0, 1] - 2;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
-        if (Choose_the_object_rotations != 1)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations -= 1;
-        } else {
-            Choose_the_object_rotations = 4;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_2_plus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, 90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 1)
+            {
+                Choose_the_object_rotations -= 1;
+            } else {
+                Choose_the_object_rotations = 4;
+            }
+        }
     }
 
-    private void Rotate_State_3_plus(bool check)
+    private void Rotate_State_3_plus()
     {
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] += 2;
+            interim[0, 0] = position[0, 0] + 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] += 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 1] -= 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] - 2 ;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] -= 2;
+            interim[0, 0] = position[0, 0] - 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;  
-            position[3, 1] -= 1;          
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;     
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 1] += 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] + 2;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] -= 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
-        if (Choose_the_object_rotations != 4)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations += 1;
-        } else {
-            Choose_the_object_rotations = 1;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_3_minus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, -90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 4)
+            {
+                Choose_the_object_rotations += 1;
+            } else {
+                Choose_the_object_rotations = 1;
+            }
+        }
     }
 
-    private void Rotate_State_3_minus(bool check)
+    private void Rotate_State_3_minus()
     {       
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 1] -= 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] - 2;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] -= 2;
+            interim[0, 0] = position[0, 0] - 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;  
-            position[3, 1] -= 1; 
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 1] += 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] + 2;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] -= 1;           
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] - 1;           
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] += 2;
+            interim[0, 0] = position[0, 0] + 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] += 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
-        if (Choose_the_object_rotations != 1)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations -= 1;
-        } else {
-            Choose_the_object_rotations = 4;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_3_plus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, 90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 1)
+            {
+                Choose_the_object_rotations -= 1;
+            } else {
+                Choose_the_object_rotations = 4;
+            }
+        }
     }
 
-    private void Rotate_State_5_plus(bool check)
+    private void Rotate_State_5_plus()
     {
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] -= 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] += 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;  
-            position[3, 1] += 1;          
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] + 1;       
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] += 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;
-            position[3, 1] -= 1;
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
-        if (Choose_the_object_rotations != 4)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations += 1;
-        } else {
-            Choose_the_object_rotations = 1;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_5_minus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, -90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 4)
+            {
+                Choose_the_object_rotations += 1;
+            } else {
+                Choose_the_object_rotations = 1;
+            }
+        }
     }
 
-    private void Rotate_State_5_minus(bool check)
+    private void Rotate_State_5_minus()
     {       
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] += 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
 
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[3, 0] += 1;  
-            position[3, 1] += 1; 
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
+            
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] += 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;
-            position[3, 1] -= 1;           
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;         
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] -= 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
-        if (Choose_the_object_rotations != 1)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations -= 1;
-        } else {
-            Choose_the_object_rotations = 4;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_5_plus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, 90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 1)
+            {
+                Choose_the_object_rotations -= 1;
+            } else {
+                Choose_the_object_rotations = 4;
+            }
+        }
     }
 
-    private void Rotate_State_6_plus(bool check)
+    private void Rotate_State_6_plus()
     {
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 1] += 2;
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] + 2;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 0] += 2;
+            interim[3, 0] = position[3, 0] + 2;
+            interim[3, 1] = position[3, 1];
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 1] -= 2;            
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] - 2;     
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] += 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 0] -= 2;
+            interim[3, 0] = position[3, 0] - 2;
+            interim[3, 1] = position[3, 1];
         }
 
-        if (Choose_the_object_rotations != 4)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations += 1;
-        } else {
-            Choose_the_object_rotations = 1;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_6_minus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, -90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 4)
+            {
+                Choose_the_object_rotations += 1;
+            } else {
+                Choose_the_object_rotations = 1;
+            }
+        }
     }
 
-    private void Rotate_State_6_minus(bool check)
+    private void Rotate_State_6_minus()
     {       
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 0] += 2;
+            interim[3, 0] = position[3, 0] + 2;
+            interim[3, 1] = position[3, 1];
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] += 1;
-            position[0, 1] += 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] + 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] -= 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] - 1;
             
-            position[3, 1] -= 2;
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] - 2;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 0] += 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] + 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] -= 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] - 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 0] -= 2;            
+            interim[3, 0] = position[3, 0] - 2;
+            interim[3, 1] = position[3, 1];           
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] -= 1;
-            position[0, 1] -= 1;
+            interim[0, 0] = position[0, 0] - 1;
+            interim[0, 1] = position[0, 1] - 1;
+
+            interim[1, 0] = position[1, 0];
+            interim[1, 1] = position[1, 1];
             
-            position[2, 0] += 1;
-            position[2, 1] += 1;
+            interim[2, 0] = position[2, 0] + 1;
+            interim[2, 1] = position[2, 1] + 1;
             
-            position[3, 1] += 2;
+            interim[3, 0] = position[3, 0];
+            interim[3, 1] = position[3, 1] + 2;
         }
 
-        if (Choose_the_object_rotations != 1)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations -= 1;
-        } else {
-            Choose_the_object_rotations = 4;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_6_plus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, 90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 1)
+            {
+                Choose_the_object_rotations -= 1;
+            } else {
+                Choose_the_object_rotations = 4;
+            }
+        }
     }
 
-    private void Rotate_State_7_plus(bool check)
+    private void Rotate_State_7_plus()
     {
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 1] -= 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] - 2;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 0] -= 2;
+            interim[0, 0] = position[0, 0] - 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 3) 
         {
-            position[0, 1] += 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] + 2;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] += 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;  
-            position[3, 1] -= 1;          
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;       
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 0] += 2;
+            interim[0, 0] = position[0, 0] + 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] -= 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
-        if (Choose_the_object_rotations != 4)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations += 1;
-        } else {
-            Choose_the_object_rotations = 1;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_7_minus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, -90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 4)
+            {
+                Choose_the_object_rotations += 1;
+            } else {
+                Choose_the_object_rotations = 1;
+            }
+        }
     }
 
-    private void Rotate_State_7_minus(bool check)
+    private void Rotate_State_7_minus()
     {       
-        bool temp = true;
+        int[,] interim = new int[4, 2];
+
+        bool checkcollid = true;
 
         if (Choose_the_object_rotations == 1) 
         {
-            position[0, 0] -= 2;
+            interim[0, 0] = position[0, 0] - 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
         if (Choose_the_object_rotations == 2) 
         {
-            position[0, 1] += 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] + 2;
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] + 1;
             
-            position[1, 0] += 1;
-            position[1, 1] += 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] += 1;  
-            position[3, 1] -= 1; 
+            interim[3, 0] = position[3, 0] + 1;
+            interim[3, 1] = position[3, 1] - 1;
         }
 
         if (Choose_the_object_rotations == 3) 
-        {
-            position[0, 0] += 2;
+        {        
+            interim[0, 0] = position[0, 0] + 2;
+            interim[0, 1] = position[0, 1];
+
+            interim[1, 0] = position[1, 0] + 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] += 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] -= 1;           
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] - 1;  
         }
 
         if (Choose_the_object_rotations == 4) 
         {
-            position[0, 1] -= 2;
+            interim[0, 0] = position[0, 0];
+            interim[0, 1] = position[0, 1] - 2;
+
+            interim[1, 0] = position[1, 0] - 1;
+            interim[1, 1] = position[1, 1] - 1;
             
-            position[1, 0] -= 1;
-            position[1, 1] -= 1;
+            interim[2, 0] = position[2, 0];
+            interim[2, 1] = position[2, 1];
             
-            position[3, 0] -= 1;
-            position[3, 1] += 1;
+            interim[3, 0] = position[3, 0] - 1;
+            interim[3, 1] = position[3, 1] + 1;
         }
 
-        if (Choose_the_object_rotations != 1)
+        for (int i = 0; i < 4; i++)
         {
-            Choose_the_object_rotations -= 1;
-        } else {
-            Choose_the_object_rotations = 4;
-        }
-
-        if (check)
-        {
-            for (int i = 0; i < 4; i++)
+            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
             {
-                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
-                {
-                    Rotate_State_7_plus(false);
-                    temp = false;
-                    break;
-                }
+                checkcollid = false;
             }
         }
 
-        if (temp && check)
+        if (checkcollid)
         {
-            pos.Rotate(0, 0, 90);
-        }
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i].transform.position = blocks[i].transform.position + new Vector3((interim[i, 0] - position[i, 0]) * Step, (interim[i, 1] - position[i, 1]) * Step, 0);
 
+                position[i, 0] = interim[i, 0];
+                position[i, 1] = interim[i, 1];
+            }
+            
+            if (Choose_the_object_rotations != 1)
+            {
+                Choose_the_object_rotations -= 1;
+            } else {
+                Choose_the_object_rotations = 4;
+            }
+        }
     }
 
 }
