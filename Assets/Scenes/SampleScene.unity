@@ -652,6 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4ac7b0aa2e0296cad9246f370a19b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NumberOfSkins: 1
   SimpleBlock: {fileID: 6879393052020784473, guid: 2dcdb70056e89e71090da910a47a23e2,
     type: 3}
   PObject: {fileID: 192200685}

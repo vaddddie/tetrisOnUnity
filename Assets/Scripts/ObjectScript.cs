@@ -7,6 +7,7 @@ public class ObjectScript : MonoBehaviour
     private int Choose_the_object;
     private int Choose_the_object_rotations;
 
+    public int NumberOfSkins = 1;
     public GameObject SimpleBlock;
 
     public PredictionScript PObject;
@@ -17,7 +18,7 @@ public class ObjectScript : MonoBehaviour
 
     public float SideMove = 0.1f;
 
-    private bool[,] coord = new bool[14, 25];
+    private bool[,] coord = new bool[16, 25];
     private int[,] position = new int[4, 2];
     private GameObject[,] objects = new GameObject[10, 23];
     private GameObject[] blocks = new GameObject[4];
@@ -40,7 +41,7 @@ public class ObjectScript : MonoBehaviour
     {
         Choose_the_object_rotations = 1;
 
-        for(int i = 0; i < 14; i++)
+        for(int i = 0; i < 16; i++)
         {
             coord[i, 0] = true;
             coord[i, 1] = true;
@@ -50,8 +51,10 @@ public class ObjectScript : MonoBehaviour
         {
             coord[0, i] = true;
             coord[1, i] = true;
-            coord[12, i] = true;
+            coord[2, i] = true;
             coord[13, i] = true;
+            coord[14, i] = true;
+            coord[15, i] = true;
         }
 
         NextObject[0] = Random.Range(1, 7);
@@ -61,7 +64,6 @@ public class ObjectScript : MonoBehaviour
         //NextObject[1] = 2;
 
         Init_State();
-
     }
 
     private void Init_State()
@@ -572,13 +574,13 @@ public class ObjectScript : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0] + 1, position[i, 1]] == true)
+                if (coord[position[i, 0] + 2, position[i, 1]] == true)
                 {
                     temp = true;
                     
                     for (int j = 0; j < 4; j++)
                     {
-                        coord[position[j, 0] + 1, position[j, 1] + 1] = true;
+                        coord[position[j, 0] + 2, position[j, 1] + 1] = true;
                         objects[position[j, 0] - 1, position[j, 1] - 1] = blocks[j];
                     }
 
@@ -619,7 +621,7 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[position[i, 0], position[i, 1] + 1] == true)
+            if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
             {
                 temp = false;
                 break;
@@ -644,7 +646,7 @@ public class ObjectScript : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0], position[i, 1] + 1] == true)
+                if (coord[position[i, 0] + 1, position[i, 1] + 1] == true)
                 {
                     temp = false;
                     break;
@@ -672,7 +674,7 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[position[i, 0] + 2, position[i, 1] + 1] == true)
+            if (coord[position[i, 0] + 3, position[i, 1] + 1] == true)
             {
                 temp = false;
                 break;
@@ -696,7 +698,7 @@ public class ObjectScript : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0] + 2, position[i, 1] + 1] == true)
+                if (coord[position[i, 0] + 3, position[i, 1] + 1] == true)
                 {
                     temp = false;
                     break;
@@ -737,13 +739,13 @@ public class ObjectScript : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                if (coord[position[i, 0] + 1, position[i, 1]] == true)
+                if (coord[position[i, 0] + 2, position[i, 1]] == true)
                 {
                     temp = true;
                     
                     for (int j = 0; j < 4; j++)
                     {
-                        coord[position[j, 0] + 1, position[j, 1] + 1] = true;
+                        coord[position[j, 0] + 2, position[j, 1] + 1] = true;
                         objects[position[j, 0] - 1, position[j, 1] - 1] = blocks[j];
                     }
 
@@ -770,7 +772,7 @@ public class ObjectScript : MonoBehaviour
 
             for (int k1 = 1; k1 < 11; k1++)
             {
-                if (coord[k1 + 1, position[k, 1] + 1] == false)
+                if (coord[k1 + 2, position[k, 1] + 1] == false)
                 {
                     FullLine = false;
                     break;
@@ -796,7 +798,7 @@ public class ObjectScript : MonoBehaviour
 
                     for (int ix = 1; ix < 11; ix++)
                     {
-                        coord[ix + 1, iy + 1] = coord[ix + 1, iy + 2];
+                        coord[ix + 2, iy + 1] = coord[ix + 2, iy + 2];
 
                         objects[ix - 1, iy - 1] = objects[ix - 1, iy];
 
@@ -898,10 +900,40 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
             }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
         }
 
         if (checkcollid)
@@ -994,10 +1026,40 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
             }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
         }
 
         if (checkcollid)
@@ -1088,10 +1150,70 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
             }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+
+            if (!checkcollid)
+            {
+                checkcollid = true;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    interim[i, 0] += 3; 
+
+                    if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                    {
+                        checkcollid = false;
+                    }
+                }
+            } 
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+
+            if (!checkcollid)
+            {
+                checkcollid = true;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    interim[i, 0] -= 3; 
+
+                    if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                    {
+                        checkcollid = false;
+                    }
+                }
+            } 
         }
 
         if (checkcollid)
@@ -1181,10 +1303,70 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
             }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+
+            if (!checkcollid)
+            {
+                checkcollid = true;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    interim[i, 0] += 3; 
+
+                    if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                    {
+                        checkcollid = false;
+                    }
+                }
+            } 
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+
+            if (!checkcollid)
+            {
+                checkcollid = true;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    interim[i, 0] -= 3; 
+
+                    if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                    {
+                        checkcollid = false;
+                    }
+                }
+            } 
         }
 
         if (checkcollid)
@@ -1274,9 +1456,39 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 1)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 3)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
             }
         }
 
@@ -1367,9 +1579,39 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 1)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 3)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
             }
         }
 
@@ -1460,9 +1702,39 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
             }
         }
 
@@ -1553,9 +1825,39 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
             }
         }
 
@@ -1646,10 +1948,40 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
             }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
         }
 
         if (checkcollid)
@@ -1739,10 +2071,40 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
             }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 2)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 4)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            } 
         }
 
         if (checkcollid)
@@ -1832,9 +2194,39 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 1)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 3)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
             }
         }
 
@@ -1925,9 +2317,39 @@ public class ObjectScript : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (coord[interim[i, 0] + 1, interim[i, 1] + 1])
+            if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
             {
                 checkcollid = false;
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 1)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] += 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
+            }
+        }
+
+        if (!checkcollid && Choose_the_object_rotations == 3)
+        {
+            checkcollid = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                interim[i, 0] -= 1; 
+
+                if (coord[interim[i, 0] + 2, interim[i, 1] + 1])
+                {
+                    checkcollid = false;
+                }
             }
         }
 
