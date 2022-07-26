@@ -1,31 +1,46 @@
 fileFormatVersion: 2
-guid: 38b98c8638f3fed3a8a6f017dfb831b3
+guid: acee78f31da2370feba8563c332676f1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5107513058560930884
-    second: Figurs _0
+      213: 5202038645710527200
+    second: SimpleBlocks_0
   - first:
-      213: 2620829310574789250
-    second: Figurs _1
+      213: 2099053779025002283
+    second: SimpleBlocks_10
   - first:
-      213: -2369190267960347517
-    second: Figurs _5
+      213: 6436910839932199956
+    second: SimpleBlocks_10
   - first:
-      213: 8482919975234917793
-    second: Figurs _2
+      213: 3493474710491125141
+    second: SimpleBlocks_10
   - first:
-      213: 2003025628026824579
-    second: Figurs _3
+      213: -141194205256749030
+    second: SimpleBlocks_4
   - first:
-      213: -2946188445548320060
-    second: Figurs _4
+      213: -4418530854512736340
+    second: SimpleBlocks_4
   - first:
-      213: 6675831932416603263
-    second: Figurs _5
+      213: 2082450997870726073
+    second: SimpleBlocks_4
   - first:
-      213: -5525526378942015131
-    second: Figurs _7
+      213: 9008382625952106289
+    second: SimpleBlocks_10
+  - first:
+      213: -3328214959618606729
+    second: SimpleBlocks_12
+  - first:
+      213: 6059677403892755222
+    second: SimpleBlocks_4
+  - first:
+      213: -9044595481152899505
+    second: SimpleBlocks_5
+  - first:
+      213: -8617193510885901857
+    second: SimpleBlocks_7
+  - first:
+      213: -160856543405260099
+    second: SimpleBlocks_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -69,7 +84,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,169 +138,148 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Figurs _0
+      name: SimpleBlocks_0
       rect:
         serializedVersion: 2
-        x: 135
-        y: 821
-        width: 101
-        height: 101
+        x: 128
+        y: 768
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cbb8eca1fe77e19b0800000000000000
-      internalID: -5107513058560930884
+      spriteID: 0ea1e61369a513840800000000000000
+      internalID: 5202038645710527200
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Figurs _1
+      name: SimpleBlocks_2
       rect:
         serializedVersion: 2
-        x: 276
-        y: 729
-        width: 287
-        height: 193
-      alignment: 9
-      pivot: {x: 0.5018, y: 0.7355}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2820eb94f5e0f5420800000000000000
-      internalID: 2620829310574789250
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Figurs _6
-      rect:
-        serializedVersion: 2
-        x: 619
-        y: 729
-        width: 287
-        height: 193
-      alignment: 9
-      pivot: {x: 0.5005, y: 0.7285}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 38439e8f002fe1fd0800000000000000
-      internalID: -2369190267960347517
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Figurs _2
-      rect:
-        serializedVersion: 2
-        x: 135
-        y: 499
-        width: 379
-        height: 101
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1a551f5e5c269b570800000000000000
-      internalID: 8482919975234917793
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Figurs _3
-      rect:
-        serializedVersion: 2
-        x: 579
-        y: 314
-        width: 193
-        height: 286
-      alignment: 9
-      pivot: {x: 0.742, y: 0.5025}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 387ea8a323d2ccb10800000000000000
-      internalID: 2003025628026824579
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Figurs _4
-      rect:
-        serializedVersion: 2
-        x: 129
-        y: 221
-        width: 193
-        height: 193
+        x: 384
+        y: 768
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4ca6bb5e7390d17d0800000000000000
-      internalID: -2946188445548320060
+      spriteID: 41425010e40845950800000000000000
+      internalID: 6436910839932199956
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Figurs _5
+      name: SimpleBlocks_4
       rect:
         serializedVersion: 2
-        x: 418
-        y: 109
-        width: 286
-        height: 194
-      alignment: 9
-      pivot: {x: 0.5, y: 0.265}
+        x: 640
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f74b6efb5c155ac50800000000000000
-      internalID: 6675831932416603263
+      spriteID: a10f35f4e906a0ef0800000000000000
+      internalID: -141194205256749030
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Figurs _7
+      name: SimpleBlocks_10
       rect:
         serializedVersion: 2
-        x: 801
-        y: 314
-        width: 194
-        height: 286
-      alignment: 9
-      pivot: {x: 0.2575, y: 0.4979}
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5695c1aa8036153b0800000000000000
-      internalID: -5525526378942015131
+      spriteID: 1370da41544340d70800000000000000
+      internalID: 9008382625952106289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SimpleBlocks_12
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 779bacbb02ecfc1d0800000000000000
+      internalID: -3328214959618606729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SimpleBlocks_7
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd938de5824996880800000000000000
+      internalID: -8617193510885901857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SimpleBlocks_8
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db2488673d584cdf0800000000000000
+      internalID: -160856543405260099
       vertices: []
       indices: 
       edges: []

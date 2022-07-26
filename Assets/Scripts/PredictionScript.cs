@@ -19,6 +19,7 @@ public class PredictionScript : MonoBehaviour
                 Destroy(blocks[i]);
             }
         }
+
         if (PreObject == 1)
         {
             if (PreObjectRotate % 2 == 1)

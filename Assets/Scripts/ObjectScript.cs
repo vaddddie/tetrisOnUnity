@@ -8,6 +8,9 @@ public class ObjectScript : MonoBehaviour
     private int Choose_the_object_rotations;
 
     public int NumberOfSkins = 1;
+
+    public Sprite[] SimpleColors = new Sprite[6];
+
     public GameObject SimpleBlock;
 
     public PredictionScript PObject;
@@ -63,6 +66,8 @@ public class ObjectScript : MonoBehaviour
         //NextObject[0] = 2;
         //NextObject[1] = 2;
 
+        SimpleBlock.GetComponent<SpriteRenderer>().sprite = SimpleColors[Random.Range(0, 6)];
+
         Init_State();
     }
 
@@ -70,8 +75,6 @@ public class ObjectScript : MonoBehaviour
     {   
         Choose_the_object = NextObject[0];
         Choose_the_object_rotations = NextObject[1];
-
-        PredictionObject();
 
         if (Choose_the_object == 1)
         {
@@ -445,6 +448,9 @@ public class ObjectScript : MonoBehaviour
             }            
         }
 
+        SimpleBlock.GetComponent<SpriteRenderer>().sprite = SimpleColors[Random.Range(0, 6)];
+        PredictionObject();
+
         if (SC)
         {
             StopCoroutine(_Move_Down);
@@ -788,10 +794,11 @@ public class ObjectScript : MonoBehaviour
                 {
                     if (check)
                     {
-                        for (int ix = 1; ix < 11; ix++)
+                        for (int ix = 0; ix < 10; ix++)
                         {
-                            Destroy(objects[ix - 1, position[k, 1] - 1]);
+                            Destroy(objects[ix, position[k, 1] - 1]);
                         }
+
 
                         check = false;
                     }
