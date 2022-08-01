@@ -770,7 +770,8 @@ public class ObjectScript : MonoBehaviour
 
     private void LineDeleting()
     {
-        int GlobalNumber = 0;
+        int NumberOfLines = 0;
+        int[] NoDL = new int[4];
 
         for (int k = 0; k < 4; k++)
         {
@@ -787,57 +788,142 @@ public class ObjectScript : MonoBehaviour
 
             if (FullLine)
             {
-                bool check = true;
-                GlobalNumber += 1;
-
-                for (int iy = position[k, 1]; iy < 23; iy++)
+                bool temp = true;
+            
+                for (int i = 0; i < NumberOfLines; i++)
                 {
-                    if (check)
+                    if (NoDL[i] == position[k, 1])
                     {
-                        for (int ix = 0; ix < 10; ix++)
-                        {
-                            Destroy(objects[ix, position[k, 1] - 1]);
-                        }
-
-
-                        check = false;
-                    }
-
-                    for (int ix = 1; ix < 11; ix++)
-                    {
-                        coord[ix + 2, iy + 1] = coord[ix + 2, iy + 2];
-
-                        objects[ix - 1, iy - 1] = objects[ix - 1, iy];
-
-                        if (objects[ix - 1, iy - 1] != null)
-                        {
-                            objects[ix - 1, iy - 1].transform.Translate(0, -Step, 0);
-                        }
+                        temp = false;
                     }
                 }
+                
+                if (temp)
+                {
+                    NoDL[NumberOfLines] = position[k, 1];
+                }
 
-                k--;                     
+                NumberOfLines += 1;
+
+                // for (int ix = 0; ix < 10; ix++)
+                // {
+                //     Destroy(objects[ix, position[k, 1] - 1]);
+                // }
+
+                // for (int iy = position[k, 1]; iy < 23; iy++)
+                // {
+                //     for (int ix = 1; ix < 11; ix++)
+                //     {
+                //         coord[ix + 2, iy + 1] = coord[ix + 2, iy + 2];
+
+                //         objects[ix - 1, iy - 1] = objects[ix - 1, iy];
+
+                //         if (objects[ix - 1, iy - 1] != null)
+                //         {
+                //             objects[ix - 1, iy - 1].transform.Translate(0, -Step, 0);
+                //         }
+                //     }
+                // }
+
+                // k--;
             }
         }
 
-        if (GlobalNumber != 0)
+        StartCoroutine(CoroutineDL(NoDL));
+
+
+        if (NumberOfLines != 0)
         {
-            if (GlobalNumber == 1)
+            if (NumberOfLines == 1)
             {
                 SScript.AddingPoints(100);
-            } else if (GlobalNumber == 2)
+            } else if (NumberOfLines == 2)
             {
                 SScript.AddingPoints(300);
-            } else if (GlobalNumber == 3)
+            } else if (NumberOfLines == 3)
             {
                 SScript.AddingPoints(500);
-            } else if (GlobalNumber == 4)
+            } else if (NumberOfLines == 4)
             {
                 SScript.AddingPoints(800);
             }
         }
     }
 
+    private IEnumerator CoroutineDL(int[] NoDL)
+    {
+        for (int i = 1; i < 6; i++)
+        {
+            foreach(int item in NoDL)
+            {
+                if (item != 0)
+                {
+                    Destroy(objects[5 - i, item - 1]);
+                    Destroy(objects[4 + i, item - 1]);
+                }
+            }
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        int stepNumber = 0;
+
+        for (int iy = 1; iy < 23; iy++)
+        {
+            if (stepNumber == 0)
+            {
+                foreach(int item in NoDL)
+                {
+                    if (item == iy)
+                    {
+                        stepNumber = 1;
+                    }
+                }
+            }
+
+            if (stepNumber != 0)
+            {
+                while(true)
+                {
+                    bool temp = true;
+
+                    foreach(int item in NoDL)
+                    {
+                        if(iy + stepNumber == item)
+                        {
+                            temp = false;
+                            stepNumber++;
+                            break;
+                        }
+                    }
+
+                    if (temp)
+                    {
+                        break;
+                    }
+                }
+
+                for (int ix = 1; ix < 11; ix++)
+                {
+                    if (iy + stepNumber < 24)
+                    {
+                        coord[ix + 2, iy + 1] = coord[ix + 2, iy + 1 + stepNumber];
+                        objects[ix - 1, iy - 1] = objects[ix - 1, iy - 1 + stepNumber];
+
+                    } else
+                    {
+                        coord[ix + 2, iy + 1] = false;
+                        objects[ix - 1, iy - 1] = null;
+                    }
+
+                    if (objects[ix - 1, iy - 1] != null)
+                    {
+                        objects[ix - 1, iy - 1].transform.Translate(0, -Step * stepNumber, 0);
+                    }
+                }
+            }
+        }
+    }
 
     private void Rotate_State_1_plus()
     {
