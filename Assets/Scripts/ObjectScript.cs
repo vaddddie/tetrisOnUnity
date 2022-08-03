@@ -12,9 +12,14 @@ public class ObjectScript : MonoBehaviour
     public Sprite[] SimpleColors = new Sprite[6];
 
     public GameObject SimpleBlock;
+    public GameObject PredictionBlock;
+
+    private int color;
 
     public PredictionScript PObject;
     public ScoreScript SScript;
+    public LineCounterScript LCScript;
+    public TimerScript TScript;
 
     public float Move_interval = 1f;
     public float Move_intervalWithAcc = 0.1f;
@@ -37,6 +42,7 @@ public class ObjectScript : MonoBehaviour
     private bool SC = false;
     private bool SCL = false;
     private bool SCR = false;
+    private bool life;
 
     private bool CheckAccel = false;
 
@@ -123,10 +129,6 @@ public class ObjectScript : MonoBehaviour
                     position[3, 1] = 22;
                 }
             }
-            for (int i = 0; i < 4; i++)
-            {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
-            }
         }
 
         if (Choose_the_object == 2)
@@ -183,10 +185,6 @@ public class ObjectScript : MonoBehaviour
                         position[i, 0] = 5;
                     }
                 }
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
             }
         }
 
@@ -250,11 +248,6 @@ public class ObjectScript : MonoBehaviour
                 position[3, 0] = 7;
                 position[3, 1] = 21;
             }
-
-            for (int i = 0; i < 4; i++)
-            {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
-            }
         }
 
         if (Choose_the_object == 4)
@@ -271,10 +264,6 @@ public class ObjectScript : MonoBehaviour
             position[3, 0] = 6;
             position[3, 1] = 22;
 
-            for (int i = 0; i < 4; i++)
-            {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
-            }
         }
 
         if (Choose_the_object == 5)
@@ -319,11 +308,6 @@ public class ObjectScript : MonoBehaviour
 
                 position[3, 0] = 6;
                 position[3, 1] = 22;
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
             }
         }
 
@@ -373,12 +357,7 @@ public class ObjectScript : MonoBehaviour
                     position[3, 0] = 6;
                     position[3, 1] = 20;
                 }
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
-            }            
+            }           
         }
 
         if (Choose_the_object == 7)
@@ -441,23 +420,46 @@ public class ObjectScript : MonoBehaviour
                 position[3, 0] = 6;
                 position[3, 1] = 21;
             }
-
-            for (int i = 0; i < 4; i++)
-            {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
-            }            
         }
 
-        SimpleBlock.GetComponent<SpriteRenderer>().sprite = SimpleColors[Random.Range(0, 6)];
-        PredictionObject();
+        life = true;
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (coord[position[i, 0] + 2, position[i, 1] + 1] == true)
+            {
+                life = false;
+                break;
+            }
+        }
 
         if (SC)
         {
             StopCoroutine(_Move_Down);
         }
 
-        _Move_Down = StartCoroutine(Move_down());
-        SC = true;        
+        if (life)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+            }  
+
+
+            _Move_Down = StartCoroutine(Move_down());
+            SC = true;
+        } else
+        {
+            Death();
+        }
+
+        color = Random.Range(0, 6);
+
+        SimpleBlock.GetComponent<SpriteRenderer>().sprite = SimpleColors[color];
+        PredictionBlock.GetComponent<SpriteRenderer>().sprite = SimpleColors[color];
+
+        PredictionObject();
+
     }
 
     private void PredictionObject()
@@ -467,6 +469,14 @@ public class ObjectScript : MonoBehaviour
         NextObject[1] = Random.Range(1, 5);
 
         PObject.ChangePredictionObject(NextObject[0], NextObject[1]);
+    }
+
+    private void Death()
+    {
+        Debug.Log("Failed");
+        this.enabled = false;
+
+        TScript.StopTimer();
     }
 
     void Update()
@@ -729,7 +739,31 @@ public class ObjectScript : MonoBehaviour
         bool temp = false;
 
         yield return new WaitForSeconds(Move_interval);
-        while(true)
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (coord[position[i, 0] + 2, position[i, 1]] == true)
+            {
+                temp = true;
+                
+                for (int j = 0; j < 4; j++)
+                {
+                    coord[position[j, 0] + 2, position[j, 1] + 1] = true;
+                    objects[position[j, 0] - 1, position[j, 1] - 1] = blocks[j];
+                }
+
+                LineDeleting();
+                
+                break;
+            } 
+        }
+        if (temp)
+        {
+            Init_State();
+            yield break;
+        }
+
+        while(!temp)
         {
             if (CheckAccel)
             {
@@ -801,9 +835,9 @@ public class ObjectScript : MonoBehaviour
                 if (temp)
                 {
                     NoDL[NumberOfLines] = position[k, 1];
+                    NumberOfLines += 1;
                 }
 
-                NumberOfLines += 1;
 
                 // for (int ix = 0; ix < 10; ix++)
                 // {
@@ -834,6 +868,8 @@ public class ObjectScript : MonoBehaviour
 
         if (NumberOfLines != 0)
         {
+            LCScript.AddingCounter(NumberOfLines);
+            
             if (NumberOfLines == 1)
             {
                 SScript.AddingPoints(100);
@@ -846,6 +882,17 @@ public class ObjectScript : MonoBehaviour
             } else if (NumberOfLines == 4)
             {
                 SScript.AddingPoints(800);
+                
+                foreach(int item in NoDL)
+                {
+                    if (item != 0)
+                    {
+                        for(int i = 0; i < 10; i++)
+                        {
+                            objects[i, item - 1].GetComponent<FlashScript>().Blessing();
+                        }
+                    }
+                }
             }
         }
     }

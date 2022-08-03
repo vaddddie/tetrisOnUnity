@@ -8,7 +8,7 @@ public class PredictionScript : MonoBehaviour
     public GameObject SimpleBlock;
     public GameObject[] blocks = new GameObject[4];
 
-    private float Step = 1f;
+    private float Step = 0.7f;
 
     public void ChangePredictionObject(int PreObject, int PreObjectRotate)
     {
@@ -47,13 +47,13 @@ public class PredictionScript : MonoBehaviour
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    blocks[i] = Instantiate(SimpleBlock, transform.position + new Vector3(Step * (i - 2), 0, 0), Quaternion.identity);
+                    blocks[i] = Instantiate(SimpleBlock, transform.position + new Vector3(Step * (i - 2) + Step/2, 0, 0), Quaternion.identity);
                 }
             } else
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    blocks[i] = Instantiate(SimpleBlock, transform.position + new Vector3(0, Step * (i - 2), 0), Quaternion.identity);
+                    blocks[i] = Instantiate(SimpleBlock, transform.position + new Vector3(0, Step * (i - 2) + Step/2, 0), Quaternion.identity);
                 }
             }
         }

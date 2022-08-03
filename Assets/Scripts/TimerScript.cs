@@ -7,13 +7,20 @@ public class TimerScript : MonoBehaviour
 {
     public Text timerText;
 
+    private Coroutine timer;
+
     private int Sec = 0;
     private int Min = 0;
 
     void Start()
     {
         timerText.text = Min.ToString("D2") + ":" + Sec.ToString("D2");
-        StartCoroutine(Timer());
+        timer = StartCoroutine(Timer());
+    }
+
+    public void StopTimer()
+    {
+        StopCoroutine(timer);
     }
 
     private IEnumerator Timer()

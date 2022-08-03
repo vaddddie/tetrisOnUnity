@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6879393052020784475}
   - component: {fileID: 6879393052020784474}
+  - component: {fileID: 1786733915}
   m_Layer: 0
   m_Name: SimpleBlock
   m_TagString: Untagged
@@ -70,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 6436910839932199956, guid: acee78f31da2370feba8563c332676f1,
+  m_Sprite: {fileID: -3328214959618606729, guid: acee78f31da2370feba8563c332676f1,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -82,3 +83,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1786733915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879393052020784473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b05bf1ebfaaecf4a43bf3c07831fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 6fa4fcc7d455012fdb1ec149d86a8df6, type: 2}
+  originalMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
