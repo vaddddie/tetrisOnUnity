@@ -23,6 +23,11 @@ public class TimerScript : MonoBehaviour
         StopCoroutine(timer);
     }
 
+    public void StartTimer()
+    {
+        StartCoroutine(Timer());
+    }
+
     private IEnumerator Timer()
     {
         while (true)

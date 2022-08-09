@@ -13,6 +13,8 @@ public class ObjectScript : MonoBehaviour
 
     public GameObject SimpleBlock;
     public GameObject PredictionBlock;
+    public GameObject adsMenu;
+    public GameObject restartMenu;
 
     private int color;
 
@@ -20,8 +22,10 @@ public class ObjectScript : MonoBehaviour
     public ScoreScript SScript;
     public LineCounterScript LCScript;
     public TimerScript TScript;
+    public DeathTimerScript DTScript;
 
     public float Move_interval = 1f;
+    private float Move_interval_exp;
     public float Move_intervalWithAcc = 0.1f;
 
     public float SideMove = 0.1f;
@@ -45,9 +49,19 @@ public class ObjectScript : MonoBehaviour
     private bool life;
 
     private bool CheckAccel = false;
+    private bool adsCheck = true;
+
+    public bool doubleClickOn = true;
+    private float clickTime;
+    private float clickDelay = 0.2f;
 
     void Start()
     {
+        Move_interval_exp = Move_interval;
+
+        adsMenu.SetActive(false);
+        restartMenu.SetActive(false);
+
         Choose_the_object_rotations = 1;
 
         for(int i = 0; i < 16; i++)
@@ -436,13 +450,14 @@ public class ObjectScript : MonoBehaviour
         if (SC)
         {
             StopCoroutine(_Move_Down);
+            SC = false;
         }
 
         if (life)
         {
             for (int i = 0; i < 4; i++)
             {
-                blocks[i] = Instantiate(SimpleBlock, new Vector2(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2), Quaternion.identity);
+                blocks[i] = Instantiate(SimpleBlock, new Vector3(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2, 100f), Quaternion.identity);
             }  
 
 
@@ -459,7 +474,63 @@ public class ObjectScript : MonoBehaviour
         PredictionBlock.GetComponent<SpriteRenderer>().sprite = SimpleColors[color];
 
         PredictionObject();
+    }
 
+    public void ExtraLife()
+    {
+        adsMenu.SetActive(false);
+        DTScript.StopTimer();
+
+        StartCoroutine(ELDeleting());
+    }
+
+    private IEnumerator ELDeleting()
+    {
+        for (int i = 1; i < 6; i++)
+        {
+            for (int iy = 0; iy < 23; iy++)
+            {
+                if (objects[5 - i, iy] != null)
+                    Destroy(objects[5 - i, iy]);
+
+                if (objects[4 + i, iy] != null)
+                    Destroy(objects[4 + i, iy]);
+
+            }
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        for(int i = 0; i < 16; i++)
+        {
+            coord[i, 0] = true;
+            coord[i, 1] = true;
+
+            for (int iy = 2; iy < 25; iy++)
+            {
+                coord[i, iy] = false;
+            }
+        }
+        
+        for(int i = 0; i < 25; i++)
+        {
+            coord[0, i] = true;
+            coord[1, i] = true;
+            coord[2, i] = true;
+            coord[13, i] = true;
+            coord[14, i] = true;
+            coord[15, i] = true;
+        }
+        
+        this.enabled = true;
+        TScript.StartTimer();
+
+        if (Move_interval != Move_interval_exp)
+        {
+            Move_interval = Move_interval_exp;
+        }
+
+        Init_State();
     }
 
     private void PredictionObject()
@@ -473,15 +544,88 @@ public class ObjectScript : MonoBehaviour
 
     private void Death()
     {
-        Debug.Log("Failed");
         this.enabled = false;
 
         TScript.StopTimer();
+
+        if (adsCheck)
+        {
+            adsMenu.SetActive(true);
+            DTScript.StartTimer();
+
+            adsCheck = false;
+
+            Debug.Log(1);
+        } else 
+        {
+            restartMenu.SetActive(true);
+            Debug.Log(0);
+        }
+
+    }
+
+    private bool DoubleClick()
+    {
+        if (clickTime != 0 & Time.time - clickTime < clickDelay)
+        {
+            clickTime = 0;
+            return true;
+        } else
+        {
+            clickTime = Time.time;
+            return false;
+        }
+
+    }
+
+    private void FastMove()
+    {
+        bool temp = true;
+
+        int iterator = 0;
+
+        while (temp)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (coord[position[i, 0] + 2, position[i, 1]])
+                {
+                    temp = false;
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        coord[position[j, 0] + 2, position[j, 1] + 1] = true;
+                        objects[position[j, 0] - 1, position[j, 1] - 1] = blocks[j];
+
+                        blocks[j].transform.position = blocks[j].transform.position + new Vector3(0, -Step * iterator, 0);
+                    }
+
+                    LineDeleting();
+                        
+                    break;
+                }
+            }
+
+            if (temp)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    position[i, 1] -= 1;
+                }
+            } 
+
+            iterator++;
+        }
     }
 
     void Update()
     {
         // For developmers::
+        if (Input.GetKeyDown("m"))
+        {
+            Death();
+        }
+
 
         if (Input.GetKeyDown("1"))
             NextObject[0] = 1;
@@ -605,10 +749,7 @@ public class ObjectScript : MonoBehaviour
                     break;
                 } 
             }
-            if (temp)
-            {
-                Init_State();
-            } else
+            if (!temp)
             {
                 SScript.AddingPoints(1);
                 for (int i = 0; i < 4; i++)
@@ -618,11 +759,23 @@ public class ObjectScript : MonoBehaviour
                 }
             }
 
-            CheckAccel = true;
-            Move_interval /= 10;
+            if (doubleClickOn & DoubleClick())
+            {
+                StopCoroutine(_Move_Down);
+                SC = false;
+
+                FastMove();
+
+            } else
+            {
+                CheckAccel = true;
+                Move_interval /= 10;
+            }
+
+
         }
 
-        if (Input.GetKeyUp("s"))
+        if (Input.GetKeyUp("s") & CheckAccel)
         {
             CheckAccel = false;
             Move_interval *= 10;
@@ -759,7 +912,6 @@ public class ObjectScript : MonoBehaviour
         }
         if (temp)
         {
-            Init_State();
             yield break;
         }
 
@@ -796,7 +948,6 @@ public class ObjectScript : MonoBehaviour
             }
             if (temp)
             {
-                Init_State();
                 yield break;
             }
         }
@@ -863,41 +1014,30 @@ public class ObjectScript : MonoBehaviour
             }
         }
 
-        StartCoroutine(CoroutineDL(NoDL));
-
-
-        if (NumberOfLines != 0)
+        if (NumberOfLines == 0)
         {
-            LCScript.AddingCounter(NumberOfLines);
-            
-            if (NumberOfLines == 1)
+            Init_State();
+        } else
+        {
+            StartCoroutine(CoroutineDL(NoDL, NumberOfLines));
+        }
+
+        if (NumberOfLines == 4)
+        {   
+            foreach(int item in NoDL)
             {
-                SScript.AddingPoints(100);
-            } else if (NumberOfLines == 2)
-            {
-                SScript.AddingPoints(300);
-            } else if (NumberOfLines == 3)
-            {
-                SScript.AddingPoints(500);
-            } else if (NumberOfLines == 4)
-            {
-                SScript.AddingPoints(800);
-                
-                foreach(int item in NoDL)
+                if (item != 0)
                 {
-                    if (item != 0)
+                    for(int i = 0; i < 10; i++)
                     {
-                        for(int i = 0; i < 10; i++)
-                        {
-                            objects[i, item - 1].GetComponent<FlashScript>().Blessing();
-                        }
+                        objects[i, item - 1].GetComponent<FlashScript>().Blessing();
                     }
                 }
             }
         }
     }
 
-    private IEnumerator CoroutineDL(int[] NoDL)
+    private IEnumerator CoroutineDL(int[] NoDL, int NumberOfLines)
     {
         for (int i = 1; i < 6; i++)
         {
@@ -970,6 +1110,24 @@ public class ObjectScript : MonoBehaviour
                 }
             }
         }
+
+        LCScript.AddingCounter(NumberOfLines);
+        
+        if (NumberOfLines == 1)
+        {
+            SScript.AddingPoints(100);
+        } else if (NumberOfLines == 2)
+        {
+            SScript.AddingPoints(300);
+        } else if (NumberOfLines == 3)
+        {
+            SScript.AddingPoints(500);
+        } else if (NumberOfLines == 4)
+        {
+            SScript.AddingPoints(800);
+        }
+
+        Init_State();
     }
 
     private void Rotate_State_1_plus()
