@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreScript : MonoBehaviour
 {
-    private int Score = 0;
+    public int Score = 0;
     public Text textScore;
 
     void Start()

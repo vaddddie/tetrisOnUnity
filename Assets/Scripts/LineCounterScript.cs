@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LineCounterScript : MonoBehaviour
 {
-    private int lineCounter = 0;
+    public int lineCounter = 0;
     public Text textLC;
 
     void Start()

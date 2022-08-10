@@ -9,8 +9,8 @@ public class TimerScript : MonoBehaviour
 
     private Coroutine timer;
 
-    private int Sec = 0;
-    private int Min = 0;
+    public int Sec = 0;
+    public int Min = 0;
 
     void Start()
     {

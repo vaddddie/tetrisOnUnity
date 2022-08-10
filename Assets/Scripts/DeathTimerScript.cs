@@ -10,6 +10,8 @@ public class DeathTimerScript : MonoBehaviour
     public GameObject adsMenu;
     public GameObject restartMenu;
 
+    public WritingScript writingScript;
+
     private Coroutine timerCoroutine;
 
     void Start()
@@ -36,11 +38,22 @@ public class DeathTimerScript : MonoBehaviour
             timer.fillAmount -= 0.01f;
 
             yield return new WaitForSeconds(0.03f);
+
+            if (Input.GetKey("q"))
+            {
+                if (timer.fillAmount >= 0.1f)
+                {
+                    timer.fillAmount -= 0.1f;
+                } else
+                {
+                    timer.fillAmount = 0;
+                }
+            }
         }
 
         adsMenu.SetActive(false);
         restartMenu.SetActive(true);
 
+        writingScript.WrittingInData();
     }   
-
 }

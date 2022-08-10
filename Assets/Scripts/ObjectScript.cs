@@ -23,6 +23,7 @@ public class ObjectScript : MonoBehaviour
     public LineCounterScript LCScript;
     public TimerScript TScript;
     public DeathTimerScript DTScript;
+    public WritingScript writingScript;
 
     public float Move_interval = 1f;
     private float Move_interval_exp;
@@ -555,11 +556,11 @@ public class ObjectScript : MonoBehaviour
 
             adsCheck = false;
 
-            Debug.Log(1);
         } else 
         {
             restartMenu.SetActive(true);
-            Debug.Log(0);
+            
+            writingScript.WrittingInData();
         }
 
     }
@@ -759,7 +760,7 @@ public class ObjectScript : MonoBehaviour
                 }
             }
 
-            if (doubleClickOn & DoubleClick())
+            if (doubleClickOn & DoubleClick() & !temp)
             {
                 StopCoroutine(_Move_Down);
                 SC = false;
