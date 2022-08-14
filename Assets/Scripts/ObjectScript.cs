@@ -84,9 +84,6 @@ public class ObjectScript : MonoBehaviour
         NextObject[0] = Random.Range(1, 7);
         NextObject[1] = Random.Range(1, 5);
 
-        //NextObject[0] = 2;
-        //NextObject[1] = 2;
-
         SimpleBlock.GetComponent<SpriteRenderer>().sprite = SimpleColors[Random.Range(0, 6)];
 
         Init_State();
@@ -94,6 +91,16 @@ public class ObjectScript : MonoBehaviour
 
     private void Init_State()
     {   
+        if (Move_interval != Move_interval_exp & !CheckAccel)
+        {
+            Move_interval = Move_interval_exp;
+        }
+
+        if (Move_interval != Move_interval_exp & CheckAccel)
+        {
+            Move_interval = Move_interval_exp / 10;
+        }
+
         Choose_the_object = NextObject[0];
         Choose_the_object_rotations = NextObject[1];
 
@@ -525,11 +532,6 @@ public class ObjectScript : MonoBehaviour
         
         this.enabled = true;
         TScript.StartTimer();
-
-        if (Move_interval != Move_interval_exp)
-        {
-            Move_interval = Move_interval_exp;
-        }
 
         Init_State();
     }
@@ -991,29 +993,6 @@ public class ObjectScript : MonoBehaviour
                     NoDL[NumberOfLines] = position[k, 1];
                     NumberOfLines += 1;
                 }
-
-
-                // for (int ix = 0; ix < 10; ix++)
-                // {
-                //     Destroy(objects[ix, position[k, 1] - 1]);
-                // }
-
-                // for (int iy = position[k, 1]; iy < 23; iy++)
-                // {
-                //     for (int ix = 1; ix < 11; ix++)
-                //     {
-                //         coord[ix + 2, iy + 1] = coord[ix + 2, iy + 2];
-
-                //         objects[ix - 1, iy - 1] = objects[ix - 1, iy];
-
-                //         if (objects[ix - 1, iy - 1] != null)
-                //         {
-                //             objects[ix - 1, iy - 1].transform.Translate(0, -Step, 0);
-                //         }
-                //     }
-                // }
-
-                // k--;
             }
         }
 
@@ -1033,7 +1012,10 @@ public class ObjectScript : MonoBehaviour
                 {
                     for(int i = 0; i < 10; i++)
                     {
-                        objects[i, item - 1].GetComponent<FlashScript>().Blessing();
+                        if (objects[i, item - 1] != null)
+                        {
+                            objects[i, item - 1].GetComponent<FlashScript>().Blessing();
+                        }
                     }
                 }
             }
@@ -1042,6 +1024,8 @@ public class ObjectScript : MonoBehaviour
 
     private IEnumerator CoroutineDL(int[] NoDL, int NumberOfLines)
     {
+        this.enabled = false;
+
         for (int i = 1; i < 6; i++)
         {
             foreach(int item in NoDL)
@@ -1129,6 +1113,7 @@ public class ObjectScript : MonoBehaviour
         {
             SScript.AddingPoints(800);
         }
+        this.enabled = true;
 
         Init_State();
     }
