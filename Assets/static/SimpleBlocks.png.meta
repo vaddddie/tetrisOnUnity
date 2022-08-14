@@ -7,40 +7,61 @@ TextureImporter:
     second: SimpleBlocks_0
   - first:
       213: 2099053779025002283
-    second: SimpleBlocks_10
+    second: SimpleBlocks_1
   - first:
       213: 6436910839932199956
-    second: SimpleBlocks_10
+    second: SimpleBlocks_1
   - first:
       213: 3493474710491125141
-    second: SimpleBlocks_10
+    second: SimpleBlocks_1
   - first:
       213: -141194205256749030
-    second: SimpleBlocks_4
+    second: SimpleBlocks_2
   - first:
       213: -4418530854512736340
-    second: SimpleBlocks_4
+    second: SimpleBlocks_2
   - first:
       213: 2082450997870726073
-    second: SimpleBlocks_4
+    second: SimpleBlocks_2
   - first:
       213: 9008382625952106289
-    second: SimpleBlocks_10
+    second: SimpleBlocks_1
   - first:
       213: -3328214959618606729
     second: SimpleBlocks_12
   - first:
       213: 6059677403892755222
-    second: SimpleBlocks_4
+    second: SimpleBlocks_2
   - first:
       213: -9044595481152899505
-    second: SimpleBlocks_5
+    second: SimpleBlocks_13
   - first:
       213: -8617193510885901857
-    second: SimpleBlocks_7
+    second: border_1
   - first:
       213: -160856543405260099
-    second: SimpleBlocks_8
+    second: SimpleBlocks_4
+  - first:
+      213: 6958280162521430544
+    second: SimpleBlocks_5
+  - first:
+      213: 3290052308712699144
+    second: SimpleBlocks_2
+  - first:
+      213: 1528354186415467543
+    second: SimpleBlocks_13
+  - first:
+      213: 5306128716740699514
+    second: SimpleBlocks_14
+  - first:
+      213: 7140094660343691054
+    second: SimpleBlocks_15
+  - first:
+      213: 2051181759102636432
+    second: SimpleBlocks_16
+  - first:
+      213: -6615132076871972483
+    second: SimpleBlocks_17
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -162,29 +183,8 @@ TextureImporter:
       name: SimpleBlocks_2
       rect:
         serializedVersion: 2
-        x: 384
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 41425010e40845950800000000000000
-      internalID: 6436910839932199956
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SimpleBlocks_4
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 768
+        x: 128
+        y: 512
         width: 128
         height: 128
       alignment: 0
@@ -201,52 +201,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SimpleBlocks_10
+      name: border_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 256
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1370da41544340d70800000000000000
-      internalID: 9008382625952106289
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SimpleBlocks_12
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 256
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 779bacbb02ecfc1d0800000000000000
-      internalID: -3328214959618606729
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SimpleBlocks_7
-      rect:
-        serializedVersion: 2
-        x: 128
+        x: 640
         y: 512
         width: 128
         height: 128
@@ -264,7 +222,91 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SimpleBlocks_8
+      name: SimpleBlocks_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db2488673d584cdf0800000000000000
+      internalID: -160856543405260099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SimpleBlocks_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2ff93f6a46512d10800000000000000
+      internalID: 2099053779025002283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: border_0
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59552ae6db05b7030800000000000000
+      internalID: 3493474710491125141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SimpleBlocks_5
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01abcb6f0f6c09060800000000000000
+      internalID: 6958280162521430544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SimpleBlocks_3
       rect:
         serializedVersion: 2
         x: 384
@@ -278,8 +320,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: db2488673d584cdf0800000000000000
-      internalID: -160856543405260099
+      spriteID: ca74aa329993ea2c0800000000000000
+      internalID: -4418530854512736340
       vertices: []
       indices: 
       edges: []

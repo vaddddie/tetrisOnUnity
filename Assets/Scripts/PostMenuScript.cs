@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static DataHolder;
 
 public class PostMenuScript : MonoBehaviour
 {
@@ -18,5 +19,7 @@ public class PostMenuScript : MonoBehaviour
     public void ShopLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+
+        DataHolder.Set(true);
     }
 }

@@ -617,6 +617,8 @@ public class ObjectScript : MonoBehaviour
 
             iterator++;
         }
+
+        SScript.AddingPoints(iterator);
     }
 
     void Update()
