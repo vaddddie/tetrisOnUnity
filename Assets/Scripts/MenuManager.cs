@@ -11,6 +11,8 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
+        PlayerPrefs.SetInt("Skin1", 1);
+
         if (DataHolder.Get())
         {
             mainMenu.SetActive(false);

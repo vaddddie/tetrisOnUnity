@@ -15,7 +15,6 @@ public class TimerScript : MonoBehaviour
     void Start()
     {
         timerText.text = Min.ToString("D2") + ":" + Sec.ToString("D2");
-        timer = StartCoroutine(Timer());
     }
 
     public void StopTimer()
@@ -25,7 +24,7 @@ public class TimerScript : MonoBehaviour
 
     public void StartTimer()
     {
-        StartCoroutine(Timer());
+        timer = StartCoroutine(Timer());
     }
 
     private IEnumerator Timer()
