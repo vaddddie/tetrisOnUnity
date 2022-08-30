@@ -50,10 +50,10 @@ public class GameManagerScript : MonoBehaviour
     private float clickTime;
     private float clickDelay = 0.2f;
 
-    [SerializeField] private Sprite[] simpleColors = new Sprite[6];
+    [SerializeField] private Sprite[] simpleColors;
     private int color;
 
-    private void Awake()
+    private void Start()
     {
         startTimer.SetActive(true);
         adsMenu.SetActive(false);
@@ -61,9 +61,17 @@ public class GameManagerScript : MonoBehaviour
 
         // =========================== DoubleClick from database ===========================
 
-        doubleClickAllow = true;
+        if (PlayerPrefs.GetInt("DoubleTap", 1) == 1)
+        {
+            doubleClickAllow = true;
+        } else
+        {
+            doubleClickAllow = false;
+        }
 
         // ============================ end ===============================================
+
+        
 
         this.enabled = false;
         MI_const = Move_interval;
@@ -91,7 +99,7 @@ public class GameManagerScript : MonoBehaviour
         nextObject = Random.Range(1, 7);
         nextObjectRotate = Random.Range(1, 5);
 
-        color = Random.Range(0, 6);
+        color = Random.Range(0, simpleColors.Length);
 
         simpleBlock.GetComponent<SpriteRenderer>().sprite = simpleColors[color];
         predictionBlock.GetComponent<SpriteRenderer>().sprite = simpleColors[color];
@@ -953,13 +961,15 @@ public class GameManagerScript : MonoBehaviour
             {
                 this.enabled = true;
 
-                if (Input.GetKey("s"))
-                {
-                    Move_interval = MI_const / 10;
-                } else
-                {
-                    Move_interval = MI_const;
-                }
+                // if (Input.GetKey("s"))
+                // {
+                //     Move_interval = MI_const / 10;
+                // } else
+                // {
+                //     Move_interval = MI_const;
+                // }
+
+                Move_interval = MI_const;
 
                 if (Input.GetKey("a") & _move_left == null)
                 {

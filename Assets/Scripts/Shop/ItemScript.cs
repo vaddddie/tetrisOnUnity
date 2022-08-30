@@ -41,9 +41,11 @@ public class ItemScript : MonoBehaviour
         if (PlayerPrefs.GetInt(type + "Owned", 0) == id)
         {
             mainText.text = "Eqiped";
+            mainText.color = new Color(191/255f, 188/255f, 59/255f, 255f);
         } else if (PlayerPrefs.GetInt(name_, 0) == 1)
         {
-            mainText.text = "Boughted";
+            mainText.text = "Eqip";
+            mainText.color = new Color(219/255f, 219/255f, 219/255f, 255f);
         } else
         {
             mainText.text = price.ToString();
