@@ -506,11 +506,6 @@ MonoBehaviour:
   deathTimerScript: {fileID: 255582865}
   writingScript: {fileID: 1242086353}
   startTimerScript: {fileID: 291863280}
-  rewardForStep: 1
-  rewardForOneLine: 100
-  rewardForTwoLine: 300
-  rewardForThreeLine: 500
-  rewardForFourLine: 800
   Step: 1
   Move_interval: 0.5
   side_interval: 0.03
@@ -521,6 +516,12 @@ MonoBehaviour:
   - {fileID: 3493474710491125141, guid: acee78f31da2370feba8563c332676f1, type: 3}
   - {fileID: -160856543405260099, guid: acee78f31da2370feba8563c332676f1, type: 3}
   - {fileID: 6958280162521430544, guid: acee78f31da2370feba8563c332676f1, type: 3}
+  mainColors:
+  - {fileID: 2740016229052845367, guid: 669a3784232ebe662b506d96c9f3c7c8, type: 3}
+  - {fileID: -4442701566240611994, guid: 669a3784232ebe662b506d96c9f3c7c8, type: 3}
+  - {fileID: 5558570764439451272, guid: 669a3784232ebe662b506d96c9f3c7c8, type: 3}
+  - {fileID: 1255245785030425949, guid: 669a3784232ebe662b506d96c9f3c7c8, type: 3}
+  - {fileID: -1629787866667766392, guid: 669a3784232ebe662b506d96c9f3c7c8, type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

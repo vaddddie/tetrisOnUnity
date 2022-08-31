@@ -31,14 +31,14 @@ public class GameManagerScript : MonoBehaviour
     private int nextObject;
     private int nextObjectRotate;
 
-    public int rewardForStep = 1;
-    public int rewardForOneLine = 100;
-    public int rewardForTwoLine = 300;
-    public int rewardForThreeLine = 500;
-    public int rewardForFourLine = 800;
+    private int rewardForStep;
+    private int rewardForOneLine;
+    private int rewardForTwoLine;
+    private int rewardForThreeLine;
+    private int rewardForFourLine;
 
     [SerializeField] private float Step = 1f;
-    [SerializeField] private float Move_interval = 1f;
+    [SerializeField] private float Move_interval;
     [SerializeField] private float side_interval = 0.05f;
     private float MI_const;
 
@@ -50,14 +50,75 @@ public class GameManagerScript : MonoBehaviour
     private float clickTime;
     private float clickDelay = 0.2f;
 
+    private Sprite[] ownColors;
     [SerializeField] private Sprite[] simpleColors;
+    [SerializeField] private Sprite[] mainColors;
     private int color;
 
     private void Start()
     {
+        // =========================== From database =======================================
+
+        int temp = PlayerPrefs.GetInt("SpeedOwned", 0);
+
+        if (temp != -1)
+        {
+            int x = (int)Mathf.Pow(2, temp);
+
+            Move_interval = 0.5f / x;
+
+            rewardForStep = 1 * x;
+            rewardForOneLine = 100 * x;
+            rewardForTwoLine = 300 * x;
+            rewardForThreeLine = 500 * x;
+            rewardForFourLine = 800 * x;
+        } else 
+        {
+            int count = 0;
+
+            for (int i = 0; i < 5; i++)
+            {
+                if (PlayerPrefs.GetInt("Speed" + (i + 1), 0) == 1)
+                {
+                    count += 1;
+                }
+            }
+
+            int chose = Random.Range(0, count);
+            count = 0;
+
+            for (int i = 0; i < 5; i++)
+            {
+                if (PlayerPrefs.GetInt("Speed" + (i + 1), 0) == 1)
+                {
+                    count += 1;
+                    if (count == chose)
+                    {
+                        int x = (int)Mathf.Pow(2, i);
+
+                        Move_interval = 1f / x;
+
+                        rewardForStep = 1 * x;
+                        rewardForOneLine = 100 * x;
+                        rewardForTwoLine = 300 * x;
+                        rewardForThreeLine = 500 * x;
+                        rewardForFourLine = 800 * x;
+
+                        break;
+                    }
+                }
+            }
+
+        }
+
+
+        // =========================== From database =======================================
+
         startTimer.SetActive(true);
         adsMenu.SetActive(false);
         restartMenu.SetActive(false);
+
+        ChoseColor();
 
         // =========================== DoubleClick from database ===========================
 
@@ -94,15 +155,26 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    private void ChoseColor()
+    {
+        if (PlayerPrefs.GetInt("SkinOwned", 0) == 0)
+        {
+            ownColors = simpleColors;
+        } else if (PlayerPrefs.GetInt("SkinOwned", 0) == 1)
+        {
+            ownColors = mainColors;
+        }
+    }
+
     private void PredicitonObject()
     {
         nextObject = Random.Range(1, 7);
         nextObjectRotate = Random.Range(1, 5);
 
-        color = Random.Range(0, simpleColors.Length);
+        color = Random.Range(0, ownColors.Length);
 
-        simpleBlock.GetComponent<SpriteRenderer>().sprite = simpleColors[color];
-        predictionBlock.GetComponent<SpriteRenderer>().sprite = simpleColors[color];
+        simpleBlock.GetComponent<SpriteRenderer>().sprite = ownColors[color];
+        predictionBlock.GetComponent<SpriteRenderer>().sprite = ownColors[color];
 
         predictionScript.ChangePredictionObject(nextObject, nextObjectRotate);
 

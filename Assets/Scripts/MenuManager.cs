@@ -24,7 +24,7 @@ public class MenuManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("Skin1", 1);
         PlayerPrefs.SetInt("Music1", 1);
-        PlayerPrefs.SetInt("Deference1", 1);
+        PlayerPrefs.SetInt("Speed1", 1);
 
         if (DataHolder.Get())
         {

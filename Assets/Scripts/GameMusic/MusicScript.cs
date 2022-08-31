@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public class MusicScript : MonoBehaviour
 {
-    [SerializeField] private new AudioClip[] music;
+    [SerializeField] private AudioClip[] music;
     [SerializeField] private AudioSource source;
 
     void Start()
