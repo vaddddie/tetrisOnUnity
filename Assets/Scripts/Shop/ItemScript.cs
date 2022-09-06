@@ -16,7 +16,7 @@ public class ItemScript : MonoBehaviour
 
     private void Start()
     {
-        name_ = this.name;
+        name_ = type + id;
     }
     
     public void Tap()

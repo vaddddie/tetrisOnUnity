@@ -12,7 +12,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject records;
     [SerializeField] private GameObject settings;
 
-    [SerializeField] private new AudioClip[] audio;
+    [SerializeField] private AudioClip[] audio;
     [SerializeField] private AudioMixerGroup mixer;
     [SerializeField] private AudioSource backgroundMusic;
 
@@ -22,9 +22,13 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
-        PlayerPrefs.SetInt("Skin1", 1);
-        PlayerPrefs.SetInt("Music1", 1);
-        PlayerPrefs.SetInt("Speed1", 1);
+        PlayerPrefs.SetInt("Skin0", 1);
+        PlayerPrefs.SetInt("Music0", 1);
+        PlayerPrefs.SetInt("Speed0", 1);
+        
+        PlayerPrefs.SetInt("Skin-1", 1);
+        PlayerPrefs.SetInt("Music-1", 1);
+        PlayerPrefs.SetInt("Speed-1", 1);
 
         if (DataHolder.Get())
         {

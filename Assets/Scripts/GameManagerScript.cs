@@ -9,6 +9,7 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private GameObject adsMenu;
     [SerializeField] private GameObject restartMenu;
     [SerializeField] private GameObject startTimer;
+    [SerializeField] private GameObject darkPanel;
 
     [SerializeField] private PredictionScript predictionScript;
     [SerializeField] private ScoreScript scoreScript;
@@ -117,6 +118,7 @@ public class GameManagerScript : MonoBehaviour
         startTimer.SetActive(true);
         adsMenu.SetActive(false);
         restartMenu.SetActive(false);
+        darkPanel.SetActive(true);
 
         ChoseColor();
 
@@ -157,12 +159,16 @@ public class GameManagerScript : MonoBehaviour
 
     private void ChoseColor()
     {
-        if (PlayerPrefs.GetInt("SkinOwned", 0) == 0)
+        switch (PlayerPrefs.GetInt("SkinOwned", 0))
         {
-            ownColors = simpleColors;
-        } else if (PlayerPrefs.GetInt("SkinOwned", 0) == 1)
-        {
-            ownColors = mainColors;
+            case 0:
+                ownColors = simpleColors;
+                break;
+            case 1:
+                ownColors = mainColors; 
+                break;
+            default:
+                break;
         }
     }
 
@@ -183,6 +189,8 @@ public class GameManagerScript : MonoBehaviour
     private void Death()
     {
         this.enabled = false;
+
+        darkPanel.SetActive(true);
 
         timerScript.StopTimer();
 
@@ -252,8 +260,87 @@ public class GameManagerScript : MonoBehaviour
         startTimer.SetActive(true);
         startTimerScript.Start();
 
-        timerScript.StartTimer();
     }
+
+// =============================================== Moving ===================================
+
+    public void LeftMovingDown()
+    {
+        if (_move_left == null)
+        {
+            _move_left = StartCoroutine(MoveLeft());
+        }
+    }
+
+    public void LeftMovingUp()
+    {
+        if (_move_left != null)
+        {
+            StopCoroutine(_move_left);
+            _move_left = null;
+        }
+    }
+
+    public void RightMovingDown()
+    {
+        if (_move_right == null)
+        {
+            _move_right = StartCoroutine(MoveRight());
+        } 
+    }
+
+    public void RightMovingUp()
+    {
+        if (_move_right != null)
+        {
+            StopCoroutine(_move_right);
+            _move_right = null;
+        }
+    }
+
+    public void DownMovingDown()
+    {
+        if (!DoubleClick() | !doubleClickAllow)
+        {
+            OneStepDown(true);
+
+            Move_interval = MI_const / 10;
+        } else
+        {
+            StopCoroutine(_move_down);
+            _move_down = null;
+
+            FastMoveDown();
+        }
+    }
+
+    public void DownMovingUp()
+    {
+        Move_interval = MI_const;
+    }
+
+    public void Rotate()
+    {
+        if (object_ == 1)
+            Rotate_State_1();
+
+        if (object_ == 2)
+            Rotate_State_2();
+
+        if (object_ == 3)
+            Rotate_State_3();
+
+        if (object_ == 5)
+            Rotate_State_5();
+
+        if (object_ == 6)
+            Rotate_State_6();
+
+        if (object_ == 7)
+            Rotate_State_7();
+    }
+
+// ============================================== end ===============================
 
     private void Update()
     {
@@ -1026,7 +1113,7 @@ public class GameManagerScript : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                blocks[i] = Instantiate(simpleBlock, new Vector3(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2, 100f), Quaternion.identity);
+                blocks[i] = Instantiate(simpleBlock, new Vector3(position[i, 0] * Step - Step/2, position[i, 1] * Step - Step/2, 110f), Quaternion.identity);
             }  
 
             if (_move_down == null)

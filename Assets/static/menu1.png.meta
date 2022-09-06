@@ -26,6 +26,12 @@ TextureImporter:
   - first:
       213: -43196206116994791
     second: menu1_7
+  - first:
+      213: 7689256290380729883
+    second: menu1_8
+  - first:
+      213: 172137297196583344
+    second: menu1_9
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -127,7 +133,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1024
+        y: 1536
         width: 512
         height: 512
       alignment: 0
@@ -148,7 +154,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 1024
+        y: 1536
         width: 512
         height: 512
       alignment: 0
@@ -169,7 +175,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 1024
+        y: 1536
         width: 512
         height: 512
       alignment: 0
@@ -189,8 +195,8 @@ TextureImporter:
       name: menu1_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 512
+        x: 1536
+        y: 1536
         width: 512
         height: 512
       alignment: 0
@@ -210,8 +216,8 @@ TextureImporter:
       name: menu1_4
       rect:
         serializedVersion: 2
-        x: 512
-        y: 512
+        x: 0
+        y: 1024
         width: 512
         height: 512
       alignment: 0
@@ -231,8 +237,8 @@ TextureImporter:
       name: menu1_5
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 512
+        x: 512
+        y: 1024
         width: 512
         height: 512
       alignment: 0
@@ -252,8 +258,8 @@ TextureImporter:
       name: menu1_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 1024
+        y: 1024
         width: 512
         height: 512
       alignment: 0
@@ -273,8 +279,8 @@ TextureImporter:
       name: menu1_7
       rect:
         serializedVersion: 2
-        x: 512
-        y: 0
+        x: 0
+        y: 512
         width: 512
         height: 512
       alignment: 0
@@ -286,6 +292,48 @@ TextureImporter:
       bones: []
       spriteID: 91180c68749866ff0800000000000000
       internalID: -43196206116994791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: menu1_8
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 610
+        width: 480
+        height: 239
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1ec41f4bd9b5ba60800000000000000
+      internalID: 7689256290380729883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: menu1_9
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b98ff3b5fd836200800000000000000
+      internalID: 172137297196583344
       vertices: []
       indices: 
       edges: []
