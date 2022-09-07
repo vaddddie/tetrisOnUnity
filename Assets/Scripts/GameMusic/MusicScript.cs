@@ -8,9 +8,18 @@ public class MusicScript : MonoBehaviour
     [SerializeField] private AudioClip[] music;
     [SerializeField] private AudioSource source;
 
+    [SerializeField] private RandomChooseScript random_;
+
     void Start()
     {
-        source.clip = music[PlayerPrefs.GetInt("MusicOwned", 0)];
+        int temp = PlayerPrefs.GetInt("MusicOwned", 0);
+
+        if (temp == -1)
+        {
+            temp = random_.RAND_CHOOSE("Music", music.Length);
+        }
+
+        source.clip = music[temp];
         source.Play();
     }
 

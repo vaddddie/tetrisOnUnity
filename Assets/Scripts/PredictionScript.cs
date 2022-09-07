@@ -8,7 +8,7 @@ public class PredictionScript : MonoBehaviour
     public GameObject SimpleBlock;
     public GameObject[] blocks = new GameObject[4];
 
-    private float Step = 0.6f;
+    private float Step = 0.55f;
 
     public void ChangePredictionObject(int PreObject, int PreObjectRotate)
     {

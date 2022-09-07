@@ -10,6 +10,7 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private GameObject restartMenu;
     [SerializeField] private GameObject startTimer;
     [SerializeField] private GameObject darkPanel;
+    [SerializeField] private GameObject interface_;
 
     [SerializeField] private PredictionScript predictionScript;
     [SerializeField] private ScoreScript scoreScript;
@@ -18,6 +19,7 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private DeathTimerScript deathTimerScript;
     [SerializeField] private WritingScript writingScript;
     [SerializeField] private StartTimer startTimerScript;
+    [SerializeField] private RandomChooseScript random_;
 
     private bool watchAds = true;
 
@@ -56,61 +58,29 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private Sprite[] mainColors;
     private int color;
 
+    [SerializeField] private int speedSize;
+    [SerializeField] private int colorSize;
+
     private void Start()
     {
         // =========================== From database =======================================
 
         int temp = PlayerPrefs.GetInt("SpeedOwned", 0);
 
-        if (temp != -1)
+        if (temp == -1)
         {
-            int x = (int)Mathf.Pow(2, temp);
-
-            Move_interval = 0.5f / x;
-
-            rewardForStep = 1 * x;
-            rewardForOneLine = 100 * x;
-            rewardForTwoLine = 300 * x;
-            rewardForThreeLine = 500 * x;
-            rewardForFourLine = 800 * x;
-        } else 
-        {
-            int count = 0;
-
-            for (int i = 0; i < 5; i++)
-            {
-                if (PlayerPrefs.GetInt("Speed" + (i + 1), 0) == 1)
-                {
-                    count += 1;
-                }
-            }
-
-            int chose = Random.Range(0, count);
-            count = 0;
-
-            for (int i = 0; i < 5; i++)
-            {
-                if (PlayerPrefs.GetInt("Speed" + (i + 1), 0) == 1)
-                {
-                    count += 1;
-                    if (count == chose)
-                    {
-                        int x = (int)Mathf.Pow(2, i);
-
-                        Move_interval = 1f / x;
-
-                        rewardForStep = 1 * x;
-                        rewardForOneLine = 100 * x;
-                        rewardForTwoLine = 300 * x;
-                        rewardForThreeLine = 500 * x;
-                        rewardForFourLine = 800 * x;
-
-                        break;
-                    }
-                }
-            }
-
+            temp = random_.RAND_CHOOSE("Speed", speedSize);
         }
+
+        int x = (int)Mathf.Pow(2, temp);
+
+        Move_interval = 0.5f / x;
+
+        rewardForStep = 1 * x;
+        rewardForOneLine = 100 * x;
+        rewardForTwoLine = 300 * x;
+        rewardForThreeLine = 500 * x;
+        rewardForFourLine = 800 * x;
 
 
         // =========================== From database =======================================
@@ -159,7 +129,14 @@ public class GameManagerScript : MonoBehaviour
 
     private void ChoseColor()
     {
-        switch (PlayerPrefs.GetInt("SkinOwned", 0))
+        int temp = PlayerPrefs.GetInt("SkinOwned", 0);
+
+        if (temp == -1)
+        {
+            temp = random_.RAND_CHOOSE("Skin", colorSize);
+        }
+
+        switch (temp)
         {
             case 0:
                 ownColors = simpleColors;
@@ -190,6 +167,7 @@ public class GameManagerScript : MonoBehaviour
     {
         this.enabled = false;
 
+        interface_.SetActive(false);
         darkPanel.SetActive(true);
 
         timerScript.StopTimer();
@@ -214,6 +192,7 @@ public class GameManagerScript : MonoBehaviour
     {
         deathTimerScript.StopTimer();
         adsMenu.SetActive(false);
+        interface_.SetActive(true);
 
         StartCoroutine(CellDeleting());
     }
@@ -314,6 +293,14 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    public void DownDouble()
+    {
+        StopCoroutine(_move_down);
+        _move_down = null;
+
+        FastMoveDown();
+    }
+
     public void DownMovingUp()
     {
         Move_interval = MI_const;
@@ -344,6 +331,11 @@ public class GameManagerScript : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown("o"))
+        {
+            Debug.Log(random_.RAND_CHOOSE("Speed", 5));
+        }
+
         if (Input.GetKeyDown("w"))
         {
             if (object_ == 1)

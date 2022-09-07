@@ -12,6 +12,7 @@ public class StartTimer : MonoBehaviour
 
     [SerializeField] private GameObject startTimer;
     [SerializeField] private GameObject darkPanel;
+    [SerializeField] private GameObject interface_;
 
     private float timerDelay = 0.7f;
 
@@ -37,6 +38,7 @@ public class StartTimer : MonoBehaviour
         startTimer.SetActive(false);
         timerScript.StartTimer();
         darkPanel.SetActive(false);
+        interface_.SetActive(true);
         gameManager.InitState();
     }
 
