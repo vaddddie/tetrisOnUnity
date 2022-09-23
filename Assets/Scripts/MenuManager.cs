@@ -18,7 +18,6 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private Toggle musicToggle;
     [SerializeField] private Toggle soundToggle;
-    [SerializeField] private Toggle fallToggle;
 
     private void Awake()
     {
@@ -72,14 +71,6 @@ public class MenuManager : MonoBehaviour
             ToggleSound(false);
         }
 
-        if (PlayerPrefs.GetInt("DoubleTap", 1) == 1)
-        {
-            fallToggle.isOn = true;
-        } else
-        {
-            fallToggle.isOn = false;
-        }
-
         backgroundMusic.clip = audio[Random.Range(0, audio.Length)];
         backgroundMusic.Play();
     }
@@ -114,19 +105,6 @@ public class MenuManager : MonoBehaviour
         {
             mixer.audioMixer.SetFloat("SoundVolume", -80);
             PlayerPrefs.SetInt("SoundVolume", 0);
-        }
-
-        PlayerPrefs.Save();
-    }
-
-    public void ToggleFall(bool enabled)
-    {
-        if (enabled)
-        {
-            PlayerPrefs.SetInt("DoubleTap", 1);
-        } else
-        {
-            PlayerPrefs.SetInt("DoubleTap", 0);
         }
 
         PlayerPrefs.Save();

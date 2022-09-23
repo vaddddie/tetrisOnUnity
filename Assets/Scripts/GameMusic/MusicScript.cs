@@ -10,7 +10,7 @@ public class MusicScript : MonoBehaviour
 
     [SerializeField] private RandomChooseScript random_;
 
-    void Start()
+    private void Start()
     {
         int temp = PlayerPrefs.GetInt("MusicOwned", 0);
 
@@ -20,7 +20,12 @@ public class MusicScript : MonoBehaviour
         }
 
         source.clip = music[temp];
-        source.Play();
+    }
+
+    public void MusicStart(){
+        if (!source.isPlaying){
+            source.Play();
+        }
     }
 
 }

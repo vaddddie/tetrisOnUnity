@@ -7,17 +7,20 @@ public class StartTimer : MonoBehaviour
 {
     [SerializeField] private GameManagerScript gameManager;
     [SerializeField] private TimerScript timerScript;
+    [SerializeField] private MusicScript musicScript;
 
     [SerializeField] private Text timeText;
 
     [SerializeField] private GameObject startTimer;
     [SerializeField] private GameObject darkPanel;
     [SerializeField] private GameObject interface_;
+    [SerializeField] private GameObject pauseButton;
 
     private float timerDelay = 0.7f;
 
     public void Start()
     {
+        Time.timeScale = 1;
         timeText.text = "3";
         StartCoroutine(Timer());
     }
@@ -39,6 +42,8 @@ public class StartTimer : MonoBehaviour
         timerScript.StartTimer();
         darkPanel.SetActive(false);
         interface_.SetActive(true);
+        musicScript.MusicStart();
+        pauseButton.SetActive(true);
         gameManager.InitState();
     }
 

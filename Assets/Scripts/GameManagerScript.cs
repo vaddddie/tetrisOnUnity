@@ -11,6 +11,8 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private GameObject startTimer;
     [SerializeField] private GameObject darkPanel;
     [SerializeField] private GameObject interface_;
+    [SerializeField] private GameObject pauseButton;
+    [SerializeField] private GameObject pause;
 
     [SerializeField] private PredictionScript predictionScript;
     [SerializeField] private ScoreScript scoreScript;
@@ -40,7 +42,7 @@ public class GameManagerScript : MonoBehaviour
     private int rewardForThreeLine;
     private int rewardForFourLine;
 
-    [SerializeField] private float Step = 1f;
+    public float Step = 0.7f;
     [SerializeField] private float Move_interval;
     [SerializeField] private float side_interval = 0.05f;
     private float MI_const;
@@ -48,10 +50,6 @@ public class GameManagerScript : MonoBehaviour
     private Coroutine _move_down;
     private Coroutine _move_left;
     private Coroutine _move_right;
-
-    private bool doubleClickAllow;
-    private float clickTime;
-    private float clickDelay = 0.2f;
 
     private Sprite[] ownColors;
     [SerializeField] private Sprite[] simpleColors;
@@ -91,20 +89,6 @@ public class GameManagerScript : MonoBehaviour
         darkPanel.SetActive(true);
 
         ChoseColor();
-
-        // =========================== DoubleClick from database ===========================
-
-        if (PlayerPrefs.GetInt("DoubleTap", 1) == 1)
-        {
-            doubleClickAllow = true;
-        } else
-        {
-            doubleClickAllow = false;
-        }
-
-        // ============================ end ===============================================
-
-        
 
         this.enabled = false;
         MI_const = Move_interval;
@@ -163,6 +147,25 @@ public class GameManagerScript : MonoBehaviour
 
     }
 
+    public void PauseGame(bool value){
+        if (!value) 
+        {
+            Time.timeScale = 0;
+
+            darkPanel.SetActive(true);
+            pause.SetActive(true);
+            pauseButton.SetActive(false);
+            interface_.SetActive(false);
+        } else {
+            Time.timeScale = 1;
+
+            darkPanel.SetActive(false);
+            pause.SetActive(false);
+            pauseButton.SetActive(true);
+            interface_.SetActive(true);
+        }
+    }
+
     private void Death()
     {
         this.enabled = false;
@@ -176,6 +179,8 @@ public class GameManagerScript : MonoBehaviour
         {
             adsMenu.SetActive(true);
             deathTimerScript.StartTimer();
+            
+            pauseButton.SetActive(false);
 
             watchAds = false;
 
@@ -192,7 +197,6 @@ public class GameManagerScript : MonoBehaviour
     {
         deathTimerScript.StopTimer();
         adsMenu.SetActive(false);
-        interface_.SetActive(true);
 
         StartCoroutine(CellDeleting());
     }
@@ -279,18 +283,9 @@ public class GameManagerScript : MonoBehaviour
 
     public void DownMovingDown()
     {
-        if (!DoubleClick() | !doubleClickAllow)
-        {
-            OneStepDown(true);
+        OneStepDown(true);
 
-            Move_interval = MI_const / 10;
-        } else
-        {
-            StopCoroutine(_move_down);
-            _move_down = null;
-
-            FastMoveDown();
-        }
+        Move_interval = MI_const / 10;
     }
 
     public void DownDouble()
@@ -331,11 +326,6 @@ public class GameManagerScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("o"))
-        {
-            Debug.Log(random_.RAND_CHOOSE("Speed", 5));
-        }
-
         if (Input.GetKeyDown("w"))
         {
             if (object_ == 1)
@@ -393,18 +383,9 @@ public class GameManagerScript : MonoBehaviour
 
         if (Input.GetKeyDown("s"))
         {
-            if (!DoubleClick() | !doubleClickAllow)
-            {
-                OneStepDown(true);
+            OneStepDown(true);
 
-                Move_interval = MI_const / 10;
-            } else
-            {
-                StopCoroutine(_move_down);
-                _move_down = null;
-
-                FastMoveDown();
-            }
+            Move_interval = MI_const / 10;
         }
 
         if (Input.GetKeyUp("s"))
@@ -413,20 +394,8 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    // ============================================== DOUBLECLICK BLOCK ===========================================================
+    // ============================================== FASTMOVE BLOCK ===========================================================
 
-    private bool DoubleClick()
-    {
-        if (clickTime != 0 & Time.time - clickTime < clickDelay)
-        {
-            clickTime = 0;
-            return true;
-        } else
-        {
-            clickTime = Time.time;
-            return false;
-        }
-    }
 
     private void FastMoveDown()
     {
