@@ -8,6 +8,7 @@ public class StartTimer : MonoBehaviour
     [SerializeField] private GameManagerScript gameManager;
     [SerializeField] private TimerScript timerScript;
     [SerializeField] private MusicScript musicScript;
+    [SerializeField] private STSoundScript sTSoundScript;
 
     [SerializeField] private Text timeText;
 
@@ -30,11 +31,13 @@ public class StartTimer : MonoBehaviour
         for (int i = 3; i > 0; i--)
         {
             timeText.text = i.ToString();
+            sTSoundScript.NumbersSoundPlay(i);
 
             yield return new WaitForSeconds(timerDelay);
         }
 
         timeText.text = "GO!";
+        sTSoundScript.GoSoundPlay();
 
         yield return new WaitForSeconds(timerDelay);
 
