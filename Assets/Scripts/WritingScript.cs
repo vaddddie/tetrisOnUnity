@@ -39,10 +39,10 @@ public class WritingScript : MonoBehaviour
     {
         if (newLines != 0)
         {
-            newGold = (int)Mathf.Floor(newScore / (newLines * 100));
+            newGold = (int)Mathf.Floor(newScore / 100);
         } else
         {
-            newGold = (int)Mathf.Floor(newScore / 200);
+            newGold = (int)Mathf.Floor(newScore / 500);
         }
 
         gold.text = newGold.ToString();

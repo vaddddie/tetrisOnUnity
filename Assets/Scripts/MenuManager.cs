@@ -12,7 +12,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject records;
     [SerializeField] private GameObject settings;
 
-    [SerializeField] private AudioClip[] audio;
+    [SerializeField] private new AudioClip[] audio;
     [SerializeField] private AudioMixerGroup mixer;
     [SerializeField] private AudioSource backgroundMusic;
 

@@ -7,6 +7,7 @@ public class MusicScript : MonoBehaviour
 {
     [SerializeField] private AudioClip[] music;
     [SerializeField] private AudioSource source;
+    [SerializeField] private AudioMixerGroup mixer;
 
     [SerializeField] private RandomChooseScript random_;
 
@@ -20,11 +21,33 @@ public class MusicScript : MonoBehaviour
         }
 
         source.clip = music[temp];
+
+        if (PlayerPrefs.GetInt("MusicVolume", 1) == 1)
+        {
+            mixer.audioMixer.SetFloat("MusicVolume", -20);
+        }
+        
+        source.Play();
     }
 
-    public void MusicStart(){
-        if (!source.isPlaying){
-            source.Play();
+    public void MusicStart()
+    {
+        if (PlayerPrefs.GetInt("MusicVolume", 1) == 1)
+        {
+            StartCoroutine(VolumeLevel());    
+        }
+    }
+
+    private IEnumerator VolumeLevel()
+    {
+        float volumeLevel;
+        mixer.audioMixer.GetFloat("MusicVolume", out volumeLevel); 
+
+        for (int i = 1; i < 11; i++)
+        {
+            mixer.audioMixer.SetFloat("MusicVolume", volumeLevel + i * Mathf.Abs(volumeLevel / 10));
+            
+            yield return new WaitForSeconds(0.05f);
         }
     }
 

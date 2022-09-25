@@ -59,6 +59,9 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private int speedSize;
     [SerializeField] private int colorSize;
 
+    [SerializeField] private AudioSource fallBlocks;
+    [SerializeField] private AudioSource extraLife;
+
     private void Start()
     {
         // =========================== From database =======================================
@@ -197,6 +200,7 @@ public class GameManagerScript : MonoBehaviour
     {
         deathTimerScript.StopTimer();
         adsMenu.SetActive(false);
+        extraLife.Play();
 
         StartCoroutine(CellDeleting());
     }
@@ -249,7 +253,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void LeftMovingDown()
     {
-        if (_move_left == null)
+        if (_move_left == null & this.enabled)
         {
             _move_left = StartCoroutine(MoveLeft());
         }
@@ -257,7 +261,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void LeftMovingUp()
     {
-        if (_move_left != null)
+        if (_move_left != null & this.enabled)
         {
             StopCoroutine(_move_left);
             _move_left = null;
@@ -266,7 +270,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void RightMovingDown()
     {
-        if (_move_right == null)
+        if (_move_right == null & this.enabled)
         {
             _move_right = StartCoroutine(MoveRight());
         } 
@@ -274,7 +278,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void RightMovingUp()
     {
-        if (_move_right != null)
+        if (_move_right != null & this.enabled)
         {
             StopCoroutine(_move_right);
             _move_right = null;
@@ -283,43 +287,55 @@ public class GameManagerScript : MonoBehaviour
 
     public void DownMovingDown()
     {
-        OneStepDown(true);
+        if (this.enabled)
+        {
+            OneStepDown(true);
 
-        Move_interval = MI_const / 10;
+            Move_interval = MI_const / 10;
+        }
     }
 
     public void DownDouble()
     {
-        StopCoroutine(_move_down);
-        _move_down = null;
+        if (this.enabled)
+        {
+            StopCoroutine(_move_down);
+            _move_down = null;
 
-        FastMoveDown();
+            FastMoveDown();
+        }
     }
 
     public void DownMovingUp()
     {
-        Move_interval = MI_const;
+        if (this.enabled)
+        {
+            Move_interval = MI_const;
+        }
     }
 
     public void Rotate()
     {
-        if (object_ == 1)
-            Rotate_State_1();
+        if (this.enabled)
+        {
+            if (object_ == 1)
+                Rotate_State_1();
 
-        if (object_ == 2)
-            Rotate_State_2();
+            if (object_ == 2)
+                Rotate_State_2();
 
-        if (object_ == 3)
-            Rotate_State_3();
+            if (object_ == 3)
+                Rotate_State_3();
 
-        if (object_ == 5)
-            Rotate_State_5();
+            if (object_ == 5)
+                Rotate_State_5();
 
-        if (object_ == 6)
-            Rotate_State_6();
+            if (object_ == 6)
+                Rotate_State_6();
 
-        if (object_ == 7)
-            Rotate_State_7();
+            if (object_ == 7)
+                Rotate_State_7();
+        }
     }
 
 // ============================================== end ===============================
@@ -403,6 +419,7 @@ public class GameManagerScript : MonoBehaviour
         {
             if (OneStepDown(true))
             {
+                fallBlocks.Play();
                 break;
             }
         }
